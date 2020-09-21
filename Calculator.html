@@ -1,0 +1,1653 @@
+<!DOCTYPE HTML>
+
+<html>
+		<head>
+		<title>Lisa Gentil - Natural, Decimal and Complex Numbers Calculator</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="landing">
+
+		<!-- Header -->
+			<header id="header" class="alt ">
+				<!--
+                <h1><a href="index.html">Drift <span>by Pixelarity</span></a></h1>
+				-->
+                <nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="index.html#one" class="icon fa-angle-down">About Me</a></li>
+                        <li>
+                            <a href="index.html#two" class="icon fa-angle-down">Projects</a>
+							<ul>
+                                <li><a href="OS.html">Operating System NachOS</a></li>
+                                <li><a 
+                                href="LC3b.html">LC-3b Processor
+                                </a></li>
+                                <li><a href="2048.html">2048</a></li>
+                                <li><a href="TicTacToe.html">Tic Tac Toe</a></li>
+                                <li><a href="Adventure.html">Adventure</a></li>
+                                <li><a href="Sudoku.html">Sudoku</a></li>
+                                <li><a href="PhotoEditor.html">Photo Editor</a></li>
+                                <li><a href="FlappyBird.html">Flappy Bird</a></li>
+                                <li><a href="Calculator.html">Calculator</a></li>
+                            </ul>
+                            <li><a href="Resume.html">Résumé</a></li>
+					</ul>
+				</nav>
+			</header>
+        
+		<!-- Banner -->
+			<section id="bannerCalc">
+				<div class="inner">
+					<h2>Real, Rational and Complex Numbers Calculator</h2>
+                    <ul class="actions">
+						<li><a href="index.html" class="button big scrolly">BACK TO MAIN MENU</a></li>
+					</ul>
+				</div>
+			</section>
+        
+        <!--Intro-->
+        <section>
+            <h5>Given two number and an operator, this C++ program checks what the type(s) of the numbers is (are) and calls the right function. There are a total of 9 functions in three different children classes to handle any combinations of types of numbers. The possible types are real, rational and complex numbers, and the possible operators are +, -, * and /.</h5>
+        </section>
+        
+        
+        <br> 
+        <!--Button-->
+        <div align="center">
+            
+            <a href="#main.cpp" class="buttonInPage"> main.cpp </a>
+            <a href="#Number.cpp"class="buttonInPage"> Number.cpp </a>
+            <a href="#Number.h"class="buttonInPage"> Number.h </a>
+            <a href="#Expression.cpp"class="buttonInPage"> Expression.cpp </a>
+            <a href="#Expression.h"class="buttonInPage"> Expression.h </a>
+            <a href="#ComplexNumber.cpp"class="buttonInPage"> ComplexNumber.cpp </a>
+            <a href="#ComplexNumber.h"class="buttonInPage"> ComplexNumber.h </a>
+            <a href="#RationalNumber.cpp"class="buttonInPage"> RationalNumber.cpp </a>
+            <a href="#RationalNumber.h"class="buttonInPage"> RationalNumber.h </a>
+            <a href="#RealNumber.cpp"class="buttonInPage"> RealNumber.cpp </a>
+            <a href="#RealNumber.h"class="buttonInPage"> RealNumber.h </a>
+        
+        </div>
+        <br> 
+        
+        
+        <div align="center">
+            <video controls autoplay controls class="intelPumpVid"><source src="../../images/Calculator.mov" type="video/mp4"></video>
+            
+            <hvid><br>Format:<br>For complex numbers: "C(x + iy)" with x the real part and y the imaginary part<br>For real numbers: "R(x)" with x any real number (decimal, fraction, real...)<br>For rational number: "y"<br></hvid>
+        </div>
+        
+        <!--File-->
+                            
+                            <!--main.cpp-->
+                            <br>
+                            <section>
+                                <hnew id="main.cpp">main.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &lt;iostream&gt;</span>
+<span style="color: #557799">#include &lt;fstream&gt;</span>
+<span style="color: #557799">#include &lt;string&gt;</span>
+<span style="color: #557799">#include &quot;Expression.h&quot;</span>
+<span style="color: #557799">#define ARGS 3</span>
+
+
+<span style="color: #228899; font-weight: bold">using</span> <span style="color: #228899; font-weight: bold">namespace</span> std;
+
+<span style="color: #666666; font-style: italic">//Main function: do not modify</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">main</span>(<span style="color: #6666ff; font-weight: bold">int</span> argc,<span style="color: #6666ff; font-weight: bold">char</span> <span style="color: #333333">*</span>argv[])
+{
+	<span style="color: #228899; font-weight: bold">if</span> (argc <span style="color: #333333">!=</span> ARGS) {
+		fprintf(stderr,<span style="background-color: #e0e0ff">&quot;Wrong number of arguments.</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">Correct usage: %s tests.txt output_file.txt</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>,
+					argv[<span style="color: #6666ff; font-weight: bold">0</span>]);
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>;
+	}
+   ifstream inFile (argv[<span style="color: #6666ff; font-weight: bold">1</span>]);
+   ofstream outFile (argv[<span style="color: #6666ff; font-weight: bold">2</span>]);
+   string current_line <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;&quot;</span>;
+
+   <span style="color: #228899; font-weight: bold">while</span> (inFile)
+   {
+		getline(inFile, current_line);
+		Expression my_expression <span style="color: #333333">=</span> Expression();
+		<span style="color: #228899; font-weight: bold">if</span>(my_expression.input_expression(current_line)){
+			my_expression.evaluate_expression();
+			outFile <span style="color: #333333">&lt;&lt;</span> my_expression.print_result() <span style="color: #333333">&lt;&lt;</span> endl;
+		}
+   }
+   inFile.close();
+   outFile.close();
+
+   <span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+}
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+                            <!--Number.cpp-->
+                            <section>
+                                <hnew id="Number.cpp">Number.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;Number.h&quot;</span>
+
+<span style="color: #666666; font-style: italic">//Empty constructor sets NumberType as undefined value</span>
+Number<span style="color: #333333">::</span>Number(){
+	NumberType <span style="color: #333333">=</span> <span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>;
+}
+
+<span style="color: #666666; font-style: italic">//Complete constructor sets NumberType according to input value</span>
+Number<span style="color: #333333">::</span>Number(<span style="color: #6666ff; font-weight: bold">int</span> my_Number_type){
+	NumberType <span style="color: #333333">=</span> my_Number_type;
+}
+
+<span style="color: #666666; font-style: italic">//toString function prints warning if to string function not overloaded</span>
+string Number<span style="color: #333333">::</span>to_String(<span style="color: #6666ff; font-weight: bold">void</span>){
+	stringstream my_output;
+	string Number_type_string <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;&quot;</span>;
+	<span style="color: #228899; font-weight: bold">switch</span> (NumberType){
+		<span style="color: #228899; font-weight: bold">case</span> REAL:
+			Number_type_string <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;REAL&quot;</span>;
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> COMPLEX:
+			Number_type_string <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;COMPLEX&quot;</span>;
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> RATIONAL:
+			Number_type_string <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;RATIONAL&quot;</span>;
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #997700; font-weight: bold">default:</span>
+			Number_type_string <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;UNDEFINED&quot;</span>;
+			<span style="color: #228899; font-weight: bold">break</span>;
+	}
+	my_output <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;Error: Number type &quot;</span>;
+	my_output <span style="color: #333333">&lt;&lt;</span> Number_type_string;
+	my_output <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot; does not have a valid to_String() method!!</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>;
+	string output_string <span style="color: #333333">=</span> my_output.str();
+	<span style="color: #228899; font-weight: bold">return</span> output_string;
+}
+
+<span style="color: #666666; font-style: italic">//Getter function for NumberType variable</span>
+<span style="color: #6666ff; font-weight: bold">int</span> Number<span style="color: #333333">::</span>get_NumberType() <span style="color: #228899; font-weight: bold">const</span>{
+	<span style="color: #228899; font-weight: bold">return</span> NumberType;
+}
+
+<span style="color: #666666; font-style: italic">//Setter function for NumberType variable</span>
+<span style="color: #6666ff; font-weight: bold">void</span> Number<span style="color: #333333">::</span>set_NumberType(<span style="color: #6666ff; font-weight: bold">int</span> my_Number_type){
+	NumberType <span style="color: #333333">=</span> my_Number_type;
+}
+
+<span style="color: #666666; font-style: italic">//Operator for + Will never execute (should be overwritten by derived class)</span>
+Number Number<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg)
+{
+    Number result;
+    <span style="color: #228899; font-weight: bold">return</span> result;
+}
+
+<span style="color: #666666; font-style: italic">//Operator for - Will never execute (should be overwritten by derived class)</span>
+Number Number<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg)
+{
+    Number result;
+    <span style="color: #228899; font-weight: bold">return</span> result;
+}
+
+<span style="color: #666666; font-style: italic">//Operator for * Will never execute (should be overwritten by derived class)</span>
+Number Number<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg)
+{
+    Number result;
+    <span style="color: #228899; font-weight: bold">return</span> result;
+}
+
+<span style="color: #666666; font-style: italic">//Operator for / Will never execute (should be overwritten by derived class)</span>
+Number Number<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg)
+{
+    Number result;
+    <span style="color: #228899; font-weight: bold">return</span> result;
+}
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+        
+                            <!--Number.h-->
+                            <section>
+                                <hnew id="Number.h">Number.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#ifndef Number_H</span>
+<span style="color: #557799">#define Number_H</span>
+
+<span style="color: #557799">#include &lt;string&gt;</span>
+<span style="color: #557799">#include &lt;sstream&gt;</span>
+<span style="color: #228899; font-weight: bold">using</span> <span style="color: #228899; font-weight: bold">namespace</span> std;
+
+<span style="color: #228899; font-weight: bold">enum</span> Number_Types { REAL, COMPLEX, RATIONAL };
+
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">Number</span> {
+	<span style="color: #997700; font-weight: bold">protected:</span>
+		<span style="color: #666666; font-style: italic">//Superclass variables (inherited by all derived classes)</span>
+		<span style="color: #6666ff; font-weight: bold">int</span> NumberType;
+	<span style="color: #997700; font-weight: bold">public:</span>	
+		<span style="color: #666666; font-style: italic">//Superclass constructors</span>
+		Number();
+		Number(<span style="color: #6666ff; font-weight: bold">int</span> my_Number_type);
+
+		<span style="color: #666666; font-style: italic">//Setter and getter functions</span>
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_NumberType</span>(<span style="color: #6666ff; font-weight: bold">int</span> my_Number_type);
+		<span style="color: #6666ff; font-weight: bold">int</span> get_NumberType(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>;		
+
+		<span style="color: #666666; font-style: italic">//operator overload</span>
+		<span style="color: #228899; font-weight: bold">virtual</span> Number <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg);
+		<span style="color: #228899; font-weight: bold">virtual</span> Number <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg);
+		<span style="color: #228899; font-weight: bold">virtual</span> Number <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg);
+		<span style="color: #228899; font-weight: bold">virtual</span> Number <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> Number<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Converts class data to string (provides warning if derived class not used)</span>
+		string <span style="color: #55eedd; font-weight: bold">to_String</span>(<span style="color: #6666ff; font-weight: bold">void</span>);
+};
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+                            
+        
+        
+        
+        
+        
+        
+                            <!--Expression.cpp-->
+                            <section>
+                                <hnew id="Expression.cpp">Expression.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;Expression.h&quot;</span>
+
+<span style="color: #666666; font-style: italic">//Instantiates Empty Expression</span>
+Expression<span style="color: #333333">::</span>Expression(){
+	my_operator <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;0&#39;</span>;
+	left_Number <span style="color: #333333">=</span> <span style="color: #007722">NULL</span>;
+	right_Number <span style="color: #333333">=</span> <span style="color: #007722">NULL</span>;
+	result <span style="color: #333333">=</span> <span style="color: #007722">NULL</span>;
+}
+
+<span style="color: #666666; font-style: italic">//Instantiates Expression and parses input string</span>
+Expression<span style="color: #333333">::</span>Expression(string expression_string){
+	my_operator <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;0&#39;</span>;
+	left_Number <span style="color: #333333">=</span> <span style="color: #007722">NULL</span>;
+	right_Number <span style="color: #333333">=</span> <span style="color: #007722">NULL</span>;
+	result <span style="color: #333333">=</span> <span style="color: #007722">NULL</span>;
+	input_expression(expression_string);
+}
+
+<span style="color: #666666; font-style: italic">//Function used to parse real number</span>
+std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator Expression<span style="color: #333333">::</span>read_real(string expression_string, std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator my_iter, <span style="color: #6666ff; font-weight: bold">int</span> Number_count){
+	stringstream value_container;
+	<span style="color: #6666ff; font-weight: bold">double</span> value;
+	<span style="color: #6666ff; font-weight: bold">bool</span> first_num <span style="color: #333333">=</span> <span style="color: #007722">true</span>;
+	<span style="color: #228899; font-weight: bold">for</span> ( ; my_iter<span style="color: #333333">!=</span>expression_string.end(); <span style="color: #333333">++</span>my_iter){
+		<span style="color: #6666ff; font-weight: bold">char</span> current_character <span style="color: #333333">=</span> <span style="color: #333333">*</span>my_iter;
+		<span style="color: #6666ff; font-weight: bold">bool</span> negative_detection <span style="color: #333333">=</span> first_num <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;-&#39;</span>;
+		<span style="color: #228899; font-weight: bold">if</span> (isdigit(current_character) <span style="color: #333333">||</span> negative_detection <span style="color: #333333">||</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;.&#39;</span>){
+			first_num <span style="color: #333333">=</span> <span style="color: #007722">false</span>;
+			value_container <span style="color: #333333">&lt;&lt;</span> current_character;
+		}
+		<span style="color: #228899; font-weight: bold">else</span>{<span style="color: #228899; font-weight: bold">break</span>;}
+	}
+
+	value_container <span style="color: #333333">&gt;&gt;</span> value;
+	<span style="color: #228899; font-weight: bold">if</span>(Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>){
+		real1 <span style="color: #333333">=</span> RealNumber(value);
+		left_Number <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real1;
+	}
+	<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+		real2 <span style="color: #333333">=</span> RealNumber(value);
+		right_Number <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real2;
+	}
+	<span style="color: #228899; font-weight: bold">return</span> my_iter;
+}
+
+<span style="color: #666666; font-style: italic">//Function used to parse rational number</span>
+std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator Expression<span style="color: #333333">::</span>read_rational(string expression_string, std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator my_iter, <span style="color: #6666ff; font-weight: bold">int</span> Number_count){
+	stringstream value_container1;
+	stringstream value_container2;
+	<span style="color: #6666ff; font-weight: bold">int</span> value1, value2;
+	<span style="color: #6666ff; font-weight: bold">int</span> current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+	<span style="color: #6666ff; font-weight: bold">bool</span> paren_found <span style="color: #333333">=</span> <span style="color: #007722">false</span>;
+	<span style="color: #6666ff; font-weight: bold">bool</span> first_num <span style="color: #333333">=</span> <span style="color: #007722">true</span>;
+	<span style="color: #228899; font-weight: bold">for</span> ( ; my_iter<span style="color: #333333">!=</span>expression_string.end(); <span style="color: #333333">++</span>my_iter){
+		<span style="color: #6666ff; font-weight: bold">char</span> current_character <span style="color: #333333">=</span> <span style="color: #333333">*</span>my_iter;
+		<span style="color: #6666ff; font-weight: bold">bool</span> negative_detection <span style="color: #333333">=</span> first_num <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;-&#39;</span>;
+		<span style="color: #228899; font-weight: bold">if</span>(<span style="color: #333333">!</span>paren_found <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;(&#39;</span>){
+			paren_found <span style="color: #333333">=</span> <span style="color: #007722">true</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(paren_found <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;)&#39;</span>){
+			<span style="color: #228899; font-weight: bold">break</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span> (isdigit(current_character) <span style="color: #333333">||</span> negative_detection){
+			first_num <span style="color: #333333">=</span> <span style="color: #007722">false</span>;
+			<span style="color: #228899; font-weight: bold">if</span>(current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+				value_container1 <span style="color: #333333">&lt;&lt;</span> current_character;
+			}
+			<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">2</span>){
+				value_container2 <span style="color: #333333">&lt;&lt;</span> current_character;
+			}
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_character<span style="color: #333333">==</span><span style="color: #8888FF">&#39;/&#39;</span> <span style="color: #333333">&amp;&amp;</span> current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+			first_num <span style="color: #333333">=</span> <span style="color: #007722">true</span>;
+			current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">2</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_character<span style="color: #333333">!=</span><span style="color: #8888FF">&#39; &#39;</span>){
+			<span style="color: #228899; font-weight: bold">break</span>;
+		}
+	}
+
+	value_container1 <span style="color: #333333">&gt;&gt;</span> value1;
+	value_container2 <span style="color: #333333">&gt;&gt;</span> value2;
+	<span style="color: #228899; font-weight: bold">if</span>(Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>){
+		rational1 <span style="color: #333333">=</span> RationalNumber(value1,value2);
+		left_Number <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>rational1;
+	}
+	<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+		rational2 <span style="color: #333333">=</span> RationalNumber(value1,value2);
+		right_Number <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>rational2;
+	}
+	<span style="color: #228899; font-weight: bold">return</span> my_iter;
+}
+
+<span style="color: #666666; font-style: italic">//Function used to parse complex number</span>
+std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator Expression<span style="color: #333333">::</span>read_complex(string expression_string, std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator my_iter, <span style="color: #6666ff; font-weight: bold">int</span> Number_count){
+	stringstream value_container1;
+	stringstream value_container2;
+	<span style="color: #6666ff; font-weight: bold">double</span> value1, value2;
+	<span style="color: #6666ff; font-weight: bold">double</span> current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+	<span style="color: #6666ff; font-weight: bold">bool</span> paren_found <span style="color: #333333">=</span> <span style="color: #007722">false</span>;
+	<span style="color: #6666ff; font-weight: bold">bool</span> first_num <span style="color: #333333">=</span> <span style="color: #007722">true</span>;
+	<span style="color: #228899; font-weight: bold">for</span> ( ; my_iter<span style="color: #333333">!=</span>expression_string.end(); <span style="color: #333333">++</span>my_iter){
+		<span style="color: #6666ff; font-weight: bold">char</span> current_character <span style="color: #333333">=</span> <span style="color: #333333">*</span>my_iter;
+		<span style="color: #6666ff; font-weight: bold">bool</span> negative_detection <span style="color: #333333">=</span> first_num <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;-&#39;</span>;
+		<span style="color: #228899; font-weight: bold">if</span>(<span style="color: #333333">!</span>paren_found <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;(&#39;</span>){
+			paren_found <span style="color: #333333">=</span> <span style="color: #007722">true</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(paren_found <span style="color: #333333">&amp;&amp;</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;)&#39;</span>){
+			<span style="color: #228899; font-weight: bold">break</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span> (isdigit(current_character) <span style="color: #333333">||</span> negative_detection <span style="color: #333333">||</span> current_character <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;.&#39;</span>){
+			first_num <span style="color: #333333">=</span> <span style="color: #007722">false</span>;
+			<span style="color: #228899; font-weight: bold">if</span>(current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+				value_container1 <span style="color: #333333">&lt;&lt;</span> current_character;
+			}
+			<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">2</span>){
+				value_container2 <span style="color: #333333">&lt;&lt;</span> current_character;
+			}
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_character<span style="color: #333333">==</span><span style="color: #8888FF">&#39;+&#39;</span> <span style="color: #333333">&amp;&amp;</span> current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+			current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">2</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_character<span style="color: #333333">==</span><span style="color: #8888FF">&#39;-&#39;</span> <span style="color: #333333">&amp;&amp;</span> current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+			value_container2 <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;-&quot;</span>;
+			current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">2</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_character<span style="color: #333333">==</span><span style="color: #8888FF">&#39;i&#39;</span>){
+			<span style="color: #228899; font-weight: bold">if</span>(current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+				string temp_string <span style="color: #333333">=</span> value_container1.str();
+                value_container1.str(<span style="background-color: #e0e0ff">&quot;&quot;</span>);
+                <span style="color: #228899; font-weight: bold">if</span>(temp_string.compare(<span style="background-color: #e0e0ff">&quot;&quot;</span>)<span style="color: #333333">==</span><span style="color: #6666ff; font-weight: bold">0</span>){
+                    value_container2 <span style="color: #333333">&lt;&lt;</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+                }
+                <span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(temp_string.compare(<span style="background-color: #e0e0ff">&quot;-&quot;</span>)<span style="color: #333333">==</span><span style="color: #6666ff; font-weight: bold">0</span>){
+                     value_container2 <span style="color: #333333">&lt;&lt;</span> <span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>;
+                }
+                <span style="color: #228899; font-weight: bold">else</span>{
+				    value_container2 <span style="color: #333333">&lt;&lt;</span> temp_string;
+                }
+				current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">3</span>;
+			}
+            <span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_value <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">2</span>){
+                string temp_string <span style="color: #333333">=</span> value_container2.str();
+                value_container2.str(<span style="background-color: #e0e0ff">&quot;&quot;</span>);
+                <span style="color: #228899; font-weight: bold">if</span>(temp_string.compare(<span style="background-color: #e0e0ff">&quot;&quot;</span>)<span style="color: #333333">==</span><span style="color: #6666ff; font-weight: bold">0</span>){
+                    value_container2 <span style="color: #333333">&lt;&lt;</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+                }
+                <span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(temp_string.compare(<span style="background-color: #e0e0ff">&quot;-&quot;</span>)<span style="color: #333333">==</span><span style="color: #6666ff; font-weight: bold">0</span>){
+                     value_container2 <span style="color: #333333">&lt;&lt;</span> <span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>;
+                }
+                <span style="color: #228899; font-weight: bold">else</span>{
+				    value_container2 <span style="color: #333333">&lt;&lt;</span> temp_string;
+                }
+                current_value <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">3</span>;
+            }
+		}
+		<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(current_character<span style="color: #333333">!=</span><span style="color: #8888FF">&#39; &#39;</span>){
+			<span style="color: #228899; font-weight: bold">break</span>;
+		}
+	}
+
+	value_container1 <span style="color: #333333">&gt;&gt;</span> value1;
+	value_container2 <span style="color: #333333">&gt;&gt;</span> value2;
+	<span style="color: #228899; font-weight: bold">if</span>(Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>){
+		complex1 <span style="color: #333333">=</span> ComplexNumber(value1,value2);
+		left_Number <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex1;
+	}
+	<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>){
+		complex2 <span style="color: #333333">=</span> ComplexNumber(value1,value2);
+		right_Number <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex2;
+	}
+	<span style="color: #228899; font-weight: bold">return</span> my_iter;
+}
+
+
+<span style="color: #666666; font-style: italic">//Function used to input string</span>
+<span style="color: #6666ff; font-weight: bold">bool</span> Expression<span style="color: #333333">::</span>input_expression(string expression_string){
+	<span style="color: #6666ff; font-weight: bold">int</span> Number_count <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+	<span style="color: #228899; font-weight: bold">for</span> ( std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator my_iter<span style="color: #333333">=</span>expression_string.begin(); my_iter<span style="color: #333333">!=</span>expression_string.end() <span style="color: #333333">&amp;&amp;</span> Number_count <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">2</span>; <span style="color: #333333">++</span>my_iter){
+    	<span style="color: #6666ff; font-weight: bold">char</span> current_character <span style="color: #333333">=</span> <span style="color: #333333">*</span>my_iter;
+		<span style="color: #6666ff; font-weight: bold">bool</span> negative_detection <span style="color: #333333">=</span> current_character<span style="color: #333333">==</span><span style="color: #8888FF">&#39;-&#39;</span> <span style="color: #333333">&amp;&amp;</span> (Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">||</span> (Number_count <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span> <span style="color: #333333">&amp;&amp;</span> my_operator <span style="color: #333333">!=</span> <span style="color: #8888FF">&#39;0&#39;</span>));
+		<span style="color: #228899; font-weight: bold">if</span> (isdigit(current_character) <span style="color: #333333">||</span> negative_detection){
+			my_iter <span style="color: #333333">=</span> read_real(expression_string,my_iter,Number_count);
+			my_iter<span style="color: #333333">--</span>;
+			Number_count<span style="color: #333333">++</span>;
+		}
+		<span style="color: #228899; font-weight: bold">else</span>{
+			<span style="color: #228899; font-weight: bold">switch</span>(current_character){
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39; &#39;</span>:
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;R&#39;</span>:
+					my_iter<span style="color: #333333">++</span>;
+					my_iter <span style="color: #333333">=</span> read_rational(expression_string,my_iter,Number_count);
+					Number_count<span style="color: #333333">++</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;C&#39;</span>:
+					my_iter<span style="color: #333333">++</span>;
+					my_iter <span style="color: #333333">=</span> read_complex(expression_string,my_iter,Number_count);
+					Number_count<span style="color: #333333">++</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;+&#39;</span>:
+					my_operator <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;+&#39;</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;-&#39;</span>:
+					my_operator <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;-&#39;</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;/&#39;</span>:
+					my_operator <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;/&#39;</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;*&#39;</span>:
+					my_operator <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;*&#39;</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #997700; font-weight: bold">default:</span>
+					cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;Warning: &#39;&quot;</span> <span style="color: #333333">&lt;&lt;</span> current_character <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;&#39; is not supported!!</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>;
+					<span style="color: #228899; font-weight: bold">break</span>;
+			}
+		}
+	}
+	<span style="color: #228899; font-weight: bold">if</span>(Number_count<span style="color: #333333">==</span><span style="color: #6666ff; font-weight: bold">2</span>){
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">true</span>;
+	}
+	<span style="color: #228899; font-weight: bold">else</span>{
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">false</span>;
+	}
+}
+
+<span style="color: #666666; font-style: italic">//Function used to evaluate expression</span>
+<span style="color: #666666; font-style: italic">//Expressions will be evaluated based on data types of left and right operands</span>
+<span style="color: #6666ff; font-weight: bold">void</span> Expression<span style="color: #333333">::</span>evaluate_expression(){
+	<span style="color: #6666ff; font-weight: bold">int</span> left_type <span style="color: #333333">=</span> left_Number<span style="color: #333333">-&gt;</span>get_NumberType();
+	<span style="color: #6666ff; font-weight: bold">int</span> right_type <span style="color: #333333">=</span> right_Number<span style="color: #333333">-&gt;</span>get_NumberType();
+	<span style="color: #228899; font-weight: bold">switch</span>(my_operator){
+		<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;+&#39;</span>:
+			<span style="color: #228899; font-weight: bold">switch</span>(left_type){
+				<span style="color: #228899; font-weight: bold">case</span> REAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> COMPLEX:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> RATIONAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						rational3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">+</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>rational3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #997700; font-weight: bold">default:</span>
+					<span style="color: #333333">*</span>result <span style="color: #333333">=</span> <span style="color: #333333">*</span>left_Number <span style="color: #333333">+</span> <span style="color: #333333">*</span>right_Number;
+					<span style="color: #228899; font-weight: bold">break</span>;
+			}
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;-&#39;</span>:
+			<span style="color: #228899; font-weight: bold">switch</span>(left_type){
+				<span style="color: #228899; font-weight: bold">case</span> REAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> COMPLEX:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> RATIONAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						rational3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">-</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>rational3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #997700; font-weight: bold">default:</span>
+					<span style="color: #333333">*</span>result <span style="color: #333333">=</span> <span style="color: #333333">*</span>left_Number <span style="color: #333333">-</span> <span style="color: #333333">*</span>right_Number;
+					<span style="color: #228899; font-weight: bold">break</span>;
+			}
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;/&#39;</span>:
+			<span style="color: #228899; font-weight: bold">switch</span>(left_type){
+				<span style="color: #228899; font-weight: bold">case</span> REAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> COMPLEX:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> RATIONAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						rational3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">/</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>rational3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #997700; font-weight: bold">default:</span>
+					<span style="color: #333333">*</span>result <span style="color: #333333">=</span> <span style="color: #333333">*</span>left_Number <span style="color: #333333">/</span> <span style="color: #333333">*</span>right_Number;
+					<span style="color: #228899; font-weight: bold">break</span>;
+			}
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> <span style="color: #8888FF">&#39;*&#39;</span>:
+			<span style="color: #228899; font-weight: bold">switch</span>(left_type){
+				<span style="color: #228899; font-weight: bold">case</span> REAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> COMPLEX:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #228899; font-weight: bold">case</span> RATIONAL:
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> REAL){
+						real3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>real3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> COMPLEX){
+						complex3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>complex3;
+					}
+					<span style="color: #228899; font-weight: bold">if</span>(right_type <span style="color: #333333">==</span> RATIONAL){
+						rational3 <span style="color: #333333">=</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(left_Number)) <span style="color: #333333">*</span> <span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(right_Number));
+						result <span style="color: #333333">=</span> <span style="color: #333333">&amp;</span>rational3;
+					}
+					<span style="color: #228899; font-weight: bold">break</span>;
+				<span style="color: #997700; font-weight: bold">default:</span>
+					<span style="color: #333333">*</span>result <span style="color: #333333">=</span> <span style="color: #333333">*</span>left_Number <span style="color: #333333">*</span> <span style="color: #333333">*</span>right_Number;
+					<span style="color: #228899; font-weight: bold">break</span>;
+			}
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #997700; font-weight: bold">default:</span>
+			cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;Warning: Operation &#39;&quot;</span> <span style="color: #333333">&lt;&lt;</span> my_operator <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;&#39; is not supported!!</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>;
+			<span style="color: #228899; font-weight: bold">break</span>; 
+	}
+}
+
+<span style="color: #666666; font-style: italic">//Print output results</span>
+string Expression<span style="color: #333333">::</span>print_result(){
+	result<span style="color: #333333">-&gt;</span>get_NumberType();
+	string output_string;
+	<span style="color: #228899; font-weight: bold">switch</span>(result<span style="color: #333333">-&gt;</span>get_NumberType()){
+		<span style="color: #228899; font-weight: bold">case</span> REAL:
+			output_string <span style="color: #333333">=</span> (<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RealNumber<span style="color: #333333">*&gt;</span>(result))<span style="color: #333333">-&gt;</span>to_String();
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> COMPLEX:
+			output_string <span style="color: #333333">=</span> (<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>ComplexNumber<span style="color: #333333">*&gt;</span>(result))<span style="color: #333333">-&gt;</span>to_String();
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #228899; font-weight: bold">case</span> RATIONAL:
+			output_string <span style="color: #333333">=</span> (<span style="color: #228899; font-weight: bold">dynamic_cast</span><span style="color: #333333">&lt;</span>RationalNumber<span style="color: #333333">*&gt;</span>(result))<span style="color: #333333">-&gt;</span>to_String();
+			<span style="color: #228899; font-weight: bold">break</span>;
+		<span style="color: #997700; font-weight: bold">default:</span>
+			output_string <span style="color: #333333">=</span> <span style="background-color: #e0e0ff">&quot;Error: result NumberType is undefined!</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>;
+			<span style="color: #228899; font-weight: bold">break</span>;
+	}
+	<span style="color: #228899; font-weight: bold">return</span> output_string;
+}
+</pre></div>
+<p></p>
+                            </section>
+                            
+                            
+        
+        
+        
+        
+        
+                            <!--Expression.h-->
+                            <section>
+                                <hnew id="Expression.h">Expression.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#ifndef EXPRESSION_H</span>
+<span style="color: #557799">#define EXPRESSION_H</span>
+
+<span style="color: #557799">#include &lt;string&gt;</span>
+<span style="color: #557799">#include &quot;Number.h&quot;</span>
+<span style="color: #557799">#include &quot;ComplexNumber.h&quot;</span>
+<span style="color: #557799">#include &quot;RealNumber.h&quot;</span>
+<span style="color: #557799">#include &quot;RationalNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;iostream&gt;</span>
+
+<span style="color: #666666; font-style: italic">//This class is used for parsing input as read from file and generating output</span>
+<span style="color: #666666; font-style: italic">//Do not modify</span>
+
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">Expression</span>{
+	<span style="color: #997700; font-weight: bold">private:</span>
+		<span style="color: #6666ff; font-weight: bold">char</span> my_operator;
+		ComplexNumber complex1, complex2, complex3;
+		RealNumber real1, real2, real3;
+		RationalNumber rational1, rational2, rational3;
+		Number<span style="color: #333333">*</span> left_Number;
+		Number<span style="color: #333333">*</span> right_Number;
+		Number<span style="color: #333333">*</span> result;
+	<span style="color: #997700; font-weight: bold">public:</span>
+		Expression();
+		Expression(string expression_string);
+		std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator read_real(string expression_string, std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator current_iter, <span style="color: #6666ff; font-weight: bold">int</span> Number_count);
+		std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator read_complex(string expression_string, std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator current_iter, <span style="color: #6666ff; font-weight: bold">int</span> Number_count);
+		std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator read_rational(string expression_string, std<span style="color: #333333">::</span>string<span style="color: #333333">::</span>iterator current_iter, <span style="color: #6666ff; font-weight: bold">int</span> Number_count);
+		<span style="color: #6666ff; font-weight: bold">bool</span> <span style="color: #55eedd; font-weight: bold">input_expression</span>(string expression_string);
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">evaluate_expression</span>();
+		string <span style="color: #55eedd; font-weight: bold">print_result</span>();
+};
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+        
+        
+                            <!--ComplexNumber.cpp-->
+                            <section>
+                                <hnew id="ComplexNumber.cpp">ComplexNumber.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;ComplexNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;math.h&gt;</span>
+
+<span style="color: #666666; font-style: italic">/*</span>
+<span style="color: #666666; font-style: italic"> * AUTHOR:       Lisa Gentil</span>
+<span style="color: #666666; font-style: italic"> * NETID:        gentil2</span>
+<span style="color: #666666; font-style: italic"> * LECTURE:      BL2</span>
+<span style="color: #666666; font-style: italic"> * DISCUSSION:   BD4</span>
+<span style="color: #666666; font-style: italic"> * MP/LAB:       MP12: This week&#39;s machine problem was a sort of calculator that accepts as</span>
+<span style="color: #666666; font-style: italic"> *                      inputs real numbers, rational numbers and complex numbers. </span>
+<span style="color: #666666; font-style: italic"> *                      This class focuses on complex numbers and the different methods will use </span>
+<span style="color: #666666; font-style: italic"> *                      that complex number as the first operator and the second operator may be</span>
+<span style="color: #666666; font-style: italic"> *                      another complex, a real or a rational number. For any operation and any</span>
+<span style="color: #666666; font-style: italic"> *			second operand (real, rational or complex) the result will be a new</span>
+<span style="color: #666666; font-style: italic"> *			complex number.</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> * TERM:         Spring 2016</span>
+<span style="color: #666666; font-style: italic"> * PARTNERS:     N/A</span>
+<span style="color: #666666; font-style: italic"> */</span>
+
+<span style="color: #666666; font-style: italic">//empty constructor</span>
+ComplexNumber<span style="color: #333333">::</span>ComplexNumber()
+{
+	NumberType <span style="color: #333333">=</span> COMPLEX;
+	realComponent <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.0</span>;
+	imagComponent <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.0</span>;
+}<span style="color: #666666; font-style: italic">//end empty constructor</span>
+
+<span style="color: #666666; font-style: italic">//complete constructor</span>
+ComplexNumber<span style="color: #333333">::</span>ComplexNumber(<span style="color: #6666ff; font-weight: bold">double</span> real, <span style="color: #6666ff; font-weight: bold">double</span> imag)
+{
+	NumberType <span style="color: #333333">=</span> COMPLEX;
+	realComponent <span style="color: #333333">=</span> real;
+	imagComponent <span style="color: #333333">=</span> imag;
+}<span style="color: #666666; font-style: italic">//end complete constructor</span>
+
+<span style="color: #666666; font-style: italic">//setters and getters</span>
+<span style="color: #6666ff; font-weight: bold">void</span> ComplexNumber<span style="color: #333333">::</span>set_realComponent(<span style="color: #6666ff; font-weight: bold">double</span> rval)
+{
+	realComponent <span style="color: #333333">=</span> rval;
+}<span style="color: #666666; font-style: italic">//end setter real val</span>
+
+<span style="color: #6666ff; font-weight: bold">void</span> ComplexNumber<span style="color: #333333">::</span>set_imagComponent(<span style="color: #6666ff; font-weight: bold">double</span> ival)
+{
+	imagComponent <span style="color: #333333">=</span> ival;
+}<span style="color: #666666; font-style: italic">//end setter imag val</span>
+
+<span style="color: #6666ff; font-weight: bold">double</span> ComplexNumber<span style="color: #333333">::</span>get_realComponent(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>
+{	
+	<span style="color: #228899; font-weight: bold">return</span> realComponent;
+}<span style="color: #666666; font-style: italic">//end getter real val</span>
+
+<span style="color: #6666ff; font-weight: bold">double</span> ComplexNumber<span style="color: #333333">::</span>get_imagComponent(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>
+{	
+	<span style="color: #228899; font-weight: bold">return</span> imagComponent;
+}<span style="color: #666666; font-style: italic">//end getter imag val</span>
+
+<span style="color: #6666ff; font-weight: bold">void</span> ComplexNumber<span style="color: #333333">::</span>set_value (<span style="color: #6666ff; font-weight: bold">double</span> rval, <span style="color: #6666ff; font-weight: bold">double</span> ival)
+{
+	set_realComponent(rval);
+	set_imagComponent(ival);
+}<span style="color: #666666; font-style: italic">//end setter value</span>
+
+<span style="color: #666666; font-style: italic">//Class member</span>
+<span style="color: #6666ff; font-weight: bold">double</span> ComplexNumber<span style="color: #333333">::</span>magnitude()
+{
+	<span style="color: #6666ff; font-weight: bold">double</span> mag <span style="color: #333333">=</span> sqrt(realComponent <span style="color: #333333">*</span> realComponent <span style="color: #333333">+</span> imagComponent <span style="color: #333333">*</span> imagComponent);
+	<span style="color: #228899; font-weight: bold">return</span> mag;
+}<span style="color: #666666; font-style: italic">//end magnitude</span>
+
+<span style="color: #666666; font-style: italic">/************************************TWO COMPLEX NUMBERS********************************************/</span>
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	ComplexNumber result;
+
+	<span style="color: #666666; font-style: italic">//adding the two complex</span>
+	result.realComponent <span style="color: #333333">=</span> realComponent <span style="color: #333333">+</span> arg.get_realComponent();
+	result.imagComponent <span style="color: #333333">=</span> imagComponent <span style="color: #333333">+</span> arg.get_imagComponent();
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	ComplexNumber result;
+
+	<span style="color: #666666; font-style: italic">//substracting the two complex</span>
+	result.realComponent <span style="color: #333333">=</span> realComponent <span style="color: #333333">-</span> arg.get_realComponent();
+	result.imagComponent <span style="color: #333333">=</span> imagComponent <span style="color: #333333">-</span> arg.get_imagComponent();
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	ComplexNumber result;
+
+	<span style="color: #666666; font-style: italic">//multiplying the two complex</span>
+	<span style="color: #666666; font-style: italic">// (a + ib) * (c + id) = ac - bd + i(bc + ad)</span>
+	result.realComponent <span style="color: #333333">=</span> realComponent <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">-</span> imagComponent <span style="color: #333333">*</span> arg.get_imagComponent();
+	result.imagComponent <span style="color: #333333">=</span> imagComponent <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> realComponent <span style="color: #333333">*</span> arg.get_imagComponent();
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	ComplexNumber result;
+
+	<span style="color: #666666; font-style: italic">//dividing the two complex</span>
+	<span style="color: #666666; font-style: italic">// (a + ib) / (c + id) = (ac + bd + i(bc - ad)) / c^2 + d^2</span>
+	result.realComponent <span style="color: #333333">=</span> (realComponent <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> imagComponent <span style="color: #333333">*</span> arg.get_imagComponent()) <span style="color: #333333">/</span> (arg.get_realComponent() <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> arg.get_imagComponent() <span style="color: #333333">*</span> arg.get_imagComponent());
+	result.imagComponent <span style="color: #333333">=</span> (imagComponent <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">-</span> realComponent <span style="color: #333333">*</span> arg.get_imagComponent()) <span style="color: #333333">/</span> (arg.get_realComponent() <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> arg.get_imagComponent() <span style="color: #333333">*</span> arg.get_imagComponent());
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end divides</span>
+
+<span style="color: #666666; font-style: italic">/**************************************COMPLEX AND REAL*********************************************/</span>
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//adding a complex and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(realComponent <span style="color: #333333">+</span> arg.get_value(), imagComponent);
+
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//substracting a complex and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(realComponent <span style="color: #333333">-</span> arg.get_value(), imagComponent);
+
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//multiplying a complex and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(realComponent <span style="color: #333333">*</span> arg.get_value(), imagComponent <span style="color: #333333">*</span> arg.get_value());
+
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//dividing a complex and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(realComponent <span style="color: #333333">/</span> arg.get_value(), imagComponent <span style="color: #333333">/</span> arg.get_value());
+
+}<span style="color: #666666; font-style: italic">//end divides</span>
+
+<span style="color: #666666; font-style: italic">/************************************COMPLEX AND RATIONAL*******************************************/</span>
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//adding a complex and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((arg.get_numerator() <span style="color: #333333">+</span> realComponent <span style="color: #333333">*</span> arg.get_denominator()) <span style="color: #333333">/</span> arg.get_denominator(), imagComponent);
+
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//substracting a complex and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((realComponent <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">-</span> arg.get_numerator()) <span style="color: #333333">/</span> arg.get_denominator(), imagComponent);
+
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//multiplying a complex and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(realComponent <span style="color: #333333">*</span> arg.get_numerator() <span style="color: #333333">/</span> arg.get_denominator(), imagComponent <span style="color: #333333">*</span> arg.get_numerator() <span style="color: #333333">/</span> arg.get_denominator());
+
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+ComplexNumber ComplexNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//dividing a complex and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(realComponent <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">/</span> arg.get_numerator(), imagComponent <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">/</span> arg.get_numerator());
+
+}<span style="color: #666666; font-style: italic">//end divides</span>
+
+<span style="color: #666666; font-style: italic">//to_String converts real and imaginary components to string of type a+bi</span>
+string ComplexNumber<span style="color: #333333">::</span>to_String(<span style="color: #6666ff; font-weight: bold">void</span>){
+	stringstream my_output;
+	my_output <span style="color: #333333">&lt;&lt;</span> realComponent;
+	<span style="color: #228899; font-weight: bold">if</span>(imagComponent <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">0</span>){
+		my_output <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot; + &quot;</span> <span style="color: #333333">&lt;&lt;</span> imagComponent <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;i&quot;</span>;
+	}
+	<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span>(imagComponent <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">0</span>){
+		my_output <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;-&quot;</span> <span style="color: #333333">&lt;&lt;</span> imagComponent<span style="color: #333333">*</span>(<span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>) <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;i&quot;</span>;
+	}
+	<span style="color: #228899; font-weight: bold">return</span> my_output.str();
+}
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+        
+                            <!--ComplexNumber.h-->
+                            <section>
+                                <hnew id="ComplexNumber.h">ComplexNumber.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#ifndef COMPLEX_NUMBER_H</span>
+<span style="color: #557799">#define COMPLEX_NUMBER_H</span>
+
+<span style="color: #557799">#include &quot;Number.h&quot;</span>
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">ComplexNumber</span>;  <span style="color: #666666; font-style: italic">//This is a forward declaration, needed only to remove circular dependencies</span>
+<span style="color: #557799">#include &quot;RealNumber.h&quot;</span>
+<span style="color: #557799">#include &quot;RationalNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;cmath&gt;</span>
+<span style="color: #557799">#include &lt;iostream&gt;</span>
+
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">ComplexNumber</span><span style="color: #333333">:</span><span style="color: #228899; font-weight: bold">public</span> Number{
+	<span style="color: #997700; font-weight: bold">private:</span>
+		<span style="color: #666666; font-style: italic">//Class variables</span>
+		<span style="color: #6666ff; font-weight: bold">double</span> realComponent;
+		<span style="color: #6666ff; font-weight: bold">double</span> imagComponent;
+
+	<span style="color: #997700; font-weight: bold">public:</span>
+		<span style="color: #666666; font-style: italic">//Empty Constructor</span>
+		ComplexNumber();
+		<span style="color: #666666; font-style: italic">//Complete Constructor</span>
+		ComplexNumber(<span style="color: #6666ff; font-weight: bold">double</span> real, <span style="color: #6666ff; font-weight: bold">double</span> imag);
+
+		<span style="color: #666666; font-style: italic">//Setter and getter functions</span>
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_realComponent</span>(<span style="color: #6666ff; font-weight: bold">double</span> rval);
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_imagComponent</span>(<span style="color: #6666ff; font-weight: bold">double</span> ival);
+		<span style="color: #6666ff; font-weight: bold">double</span> get_realComponent(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>;
+		<span style="color: #6666ff; font-weight: bold">double</span> get_imagComponent(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>;
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_value</span> (<span style="color: #6666ff; font-weight: bold">double</span> rval, <span style="color: #6666ff; font-weight: bold">double</span> ival);
+
+		<span style="color: #666666; font-style: italic">//Class member functions</span>
+		<span style="color: #6666ff; font-weight: bold">double</span> <span style="color: #55eedd; font-weight: bold">magnitude</span>();
+
+		<span style="color: #666666; font-style: italic">//Operation overload for ComplexNumber (op) ComplexNumber</span>
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Operation overload for ComplexNumber (op) RealNumber		</span>
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Operation overload for ComplexNumber (op) RationalNumber	</span>
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Output class variables as string (provided)</span>
+		string <span style="color: #55eedd; font-weight: bold">to_String</span>(<span style="color: #6666ff; font-weight: bold">void</span>);
+};
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+                            <!--Rational.cpp-->
+                            <section>
+                                <hnew id="RationalNumber.cpp">RationalNumber.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;RationalNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;math.h&gt;</span>
+
+<span style="color: #666666; font-style: italic">/*</span>
+<span style="color: #666666; font-style: italic"> * AUTHOR:       Lisa Gentil</span>
+<span style="color: #666666; font-style: italic"> * NETID:        gentil2</span>
+<span style="color: #666666; font-style: italic"> * LECTURE:      BL2</span>
+<span style="color: #666666; font-style: italic"> * DISCUSSION:   BD4</span>
+<span style="color: #666666; font-style: italic"> * MP/LAB:       MP12: This week&#39;s machine problem was a sort of calculator that accepts as</span>
+<span style="color: #666666; font-style: italic"> *                      inputs real numbers, rational numbers and complex numbers. </span>
+<span style="color: #666666; font-style: italic"> *                      This class focuses on rational numbers and the different methods will use </span>
+<span style="color: #666666; font-style: italic"> *                      that number as the first operator and the second operator may be</span>
+<span style="color: #666666; font-style: italic"> *                      another rational, a real or a complex number. For an operation with a </span>
+<span style="color: #666666; font-style: italic"> *                      real the output value will be a real (so a decimal),for any </span>
+<span style="color: #666666; font-style: italic"> *                      operation with another rational number, the output will be a new rational. </span>
+<span style="color: #666666; font-style: italic"> * 			Finally when a rational is modified with a complex number the result </span>
+<span style="color: #666666; font-style: italic"> *			will be a new complex number.</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> * TERM:         Spring 2016</span>
+<span style="color: #666666; font-style: italic"> * PARTNERS:     N/A</span>
+<span style="color: #666666; font-style: italic"> */</span>
+
+
+<span style="color: #666666; font-style: italic">//empty constructor</span>
+RationalNumber<span style="color: #333333">::</span>RationalNumber()
+{
+	NumberType <span style="color: #333333">=</span> RATIONAL;
+	numerator <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+	denominator <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+}<span style="color: #666666; font-style: italic">//end empty constructor</span>
+
+<span style="color: #666666; font-style: italic">//complete constructor</span>
+RationalNumber<span style="color: #333333">::</span>RationalNumber(<span style="color: #6666ff; font-weight: bold">int</span> numer, <span style="color: #6666ff; font-weight: bold">int</span> denom)
+{
+	NumberType <span style="color: #333333">=</span> RATIONAL;
+	numerator <span style="color: #333333">=</span> numer;
+	denominator <span style="color: #333333">=</span> denom;
+}<span style="color: #666666; font-style: italic">//end complete constructor</span>
+
+<span style="color: #666666; font-style: italic">//Setter and getter</span>
+<span style="color: #6666ff; font-weight: bold">void</span> RationalNumber<span style="color: #333333">::</span>set_numerator(<span style="color: #6666ff; font-weight: bold">int</span> numer)
+{
+	numerator <span style="color: #333333">=</span> numer;
+}<span style="color: #666666; font-style: italic">//end setter for numer</span>
+
+<span style="color: #6666ff; font-weight: bold">void</span> RationalNumber<span style="color: #333333">::</span>set_denominator(<span style="color: #6666ff; font-weight: bold">int</span> denom)
+{
+	denominator <span style="color: #333333">=</span> denom;
+}<span style="color: #666666; font-style: italic">//end stter for denom</span>
+
+<span style="color: #6666ff; font-weight: bold">int</span> RationalNumber<span style="color: #333333">::</span>get_numerator(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>
+{
+	<span style="color: #228899; font-weight: bold">return</span> numerator;
+}<span style="color: #666666; font-style: italic">//end getter for numer</span>
+
+<span style="color: #6666ff; font-weight: bold">int</span> RationalNumber<span style="color: #333333">::</span>get_denominator(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>
+{
+	<span style="color: #228899; font-weight: bold">return</span> denominator;
+}<span style="color: #666666; font-style: italic">//end getter for denom</span>
+
+<span style="color: #666666; font-style: italic">//Class member</span>
+<span style="color: #6666ff; font-weight: bold">void</span> RationalNumber<span style="color: #333333">::</span>set_value(<span style="color: #6666ff; font-weight: bold">int</span> numer, <span style="color: #6666ff; font-weight: bold">int</span> denom)
+{
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_gcd <span style="color: #333333">=</span> gcd(numer, denom);
+	set_numerator(numer <span style="color: #333333">/</span> temp_gcd);
+	set_denominator(denom <span style="color: #333333">/</span> temp_gcd);
+}<span style="color: #666666; font-style: italic">//end set value</span>
+
+<span style="color: #6666ff; font-weight: bold">int</span> RationalNumber<span style="color: #333333">::</span>gcd(<span style="color: #6666ff; font-weight: bold">int</span> a, <span style="color: #6666ff; font-weight: bold">int</span> b)
+{
+	<span style="color: #228899; font-weight: bold">for</span>(<span style="color: #6666ff; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">2</span>; i <span style="color: #333333">&lt;=</span> a <span style="color: #333333">&amp;&amp;</span> i <span style="color: #333333">&lt;=</span> b; i<span style="color: #333333">++</span>)
+	{
+		<span style="color: #228899; font-weight: bold">if</span>(a<span style="color: #333333">%</span>i <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">&amp;&amp;</span> b<span style="color: #333333">%</span>i <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>)
+		{
+			<span style="color: #228899; font-weight: bold">return</span> i;
+		}<span style="color: #666666; font-style: italic">//end if</span>
+	}<span style="color: #666666; font-style: italic">//end for</span>
+	<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+}<span style="color: #666666; font-style: italic">//end gcd</span>
+
+<span style="color: #6666ff; font-weight: bold">double</span> RationalNumber<span style="color: #333333">::</span>magnitude()
+{
+	<span style="color: #228899; font-weight: bold">return</span> abs(numerator <span style="color: #333333">/</span> denominator);
+}<span style="color: #666666; font-style: italic">//end magnitude</span>
+
+<span style="color: #6666ff; font-weight: bold">double</span> RationalNumber<span style="color: #333333">::</span>decimal_value() <span style="color: #228899; font-weight: bold">const</span>
+{
+	<span style="color: #228899; font-weight: bold">return</span> numerator <span style="color: #333333">/</span> denominator;
+}<span style="color: #666666; font-style: italic">//end decimal value</span>
+
+<span style="color: #666666; font-style: italic">/************************************TWO RATIONAL NUMBERS********************************************/</span>
+RationalNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	RationalNumber result;
+
+	<span style="color: #666666; font-style: italic">//adding the two reals</span>
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_numerator <span style="color: #333333">=</span> numerator <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">+</span> arg.get_numerator() <span style="color: #333333">*</span> denominator;
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_denominator <span style="color: #333333">=</span> denominator <span style="color: #333333">*</span> arg.get_denominator();
+	<span style="color: #6666ff; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+	<span style="color: #228899; font-weight: bold">while</span>(i <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">1</span>)
+	{
+		i <span style="color: #333333">=</span> gcd(temp_numerator, temp_denominator);
+		temp_numerator <span style="color: #333333">=</span> temp_numerator <span style="color: #333333">/</span> i;
+		temp_denominator <span style="color: #333333">=</span> temp_denominator <span style="color: #333333">/</span> i;
+	}<span style="color: #666666; font-style: italic">//end while loop</span>
+	result.numerator <span style="color: #333333">=</span> temp_numerator;
+	result.denominator <span style="color: #333333">=</span> temp_denominator;
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+RationalNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	RationalNumber result;
+
+	<span style="color: #666666; font-style: italic">//substracting the two reals</span>
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_numerator <span style="color: #333333">=</span> numerator <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">-</span> arg.get_numerator() <span style="color: #333333">*</span> denominator;
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_denominator <span style="color: #333333">=</span> denominator <span style="color: #333333">*</span> arg.get_denominator();
+	<span style="color: #6666ff; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+	<span style="color: #228899; font-weight: bold">while</span>(i <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">1</span>)
+	{
+		i <span style="color: #333333">=</span> gcd(temp_numerator, temp_denominator);
+		temp_numerator <span style="color: #333333">=</span> temp_numerator <span style="color: #333333">/</span> i;
+		temp_denominator <span style="color: #333333">=</span> temp_denominator <span style="color: #333333">/</span> i;
+	}<span style="color: #666666; font-style: italic">//end while loop</span>
+	result.numerator <span style="color: #333333">=</span> temp_numerator;
+	result.denominator <span style="color: #333333">=</span> temp_denominator;
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+RationalNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	RationalNumber result;
+
+	<span style="color: #666666; font-style: italic">//mutiplying the two reals</span>
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_numerator <span style="color: #333333">=</span> numerator <span style="color: #333333">*</span> arg.get_numerator();
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_denominator <span style="color: #333333">=</span> denominator <span style="color: #333333">*</span> arg.get_denominator();
+	<span style="color: #6666ff; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+	<span style="color: #228899; font-weight: bold">while</span>(i <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">1</span>)
+	{
+		i <span style="color: #333333">=</span> gcd(temp_numerator, temp_denominator);
+		temp_numerator <span style="color: #333333">=</span> temp_numerator <span style="color: #333333">/</span> i;
+		temp_denominator <span style="color: #333333">=</span> temp_denominator <span style="color: #333333">/</span> i;
+	}<span style="color: #666666; font-style: italic">//end while loop</span>
+	result.numerator <span style="color: #333333">=</span> temp_numerator;
+	result.denominator <span style="color: #333333">=</span> temp_denominator;
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+RationalNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	RationalNumber result;
+
+	<span style="color: #666666; font-style: italic">//dividing the two reals</span>
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_numerator <span style="color: #333333">=</span> numerator <span style="color: #333333">*</span> arg.get_denominator();
+	<span style="color: #6666ff; font-weight: bold">int</span> temp_denominator <span style="color: #333333">=</span> denominator <span style="color: #333333">*</span> arg.get_numerator();
+	<span style="color: #6666ff; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+	<span style="color: #228899; font-weight: bold">while</span>(i <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">1</span>)
+	{
+		i <span style="color: #333333">=</span> gcd(temp_numerator, temp_denominator);
+		temp_numerator <span style="color: #333333">=</span> temp_numerator <span style="color: #333333">/</span> i;
+		temp_denominator <span style="color: #333333">=</span> temp_denominator <span style="color: #333333">/</span> i;
+	}<span style="color: #666666; font-style: italic">//end while loop</span>
+	result.numerator <span style="color: #333333">=</span> temp_numerator;
+	result.denominator <span style="color: #333333">=</span> temp_denominator;
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end divides</span>
+
+<span style="color: #666666; font-style: italic">/*************************************RATIONAL &amp; COMPLEX*********************************************/</span>
+ComplexNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//adding a rational and a complex</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((numerator <span style="color: #333333">+</span> arg.get_realComponent() <span style="color: #333333">*</span> denominator) <span style="color: #333333">/</span> denominator, arg.get_imagComponent());
+
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+ComplexNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//substracting a rational and a complex</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((numerator <span style="color: #333333">-</span> arg.get_realComponent() <span style="color: #333333">*</span> denominator) <span style="color: #333333">/</span> denominator, <span style="color: #333333">-</span> arg.get_imagComponent());
+
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+ComplexNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//multiplying a rational and a complex</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((numerator <span style="color: #333333">*</span> arg.get_realComponent()) <span style="color: #333333">/</span> denominator, (numerator <span style="color: #333333">*</span> arg.get_imagComponent()) <span style="color: #333333">/</span> denominator);
+
+}<span style="color: #666666; font-style: italic">//end times </span>
+
+ComplexNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//dividing a rational and a complex</span>
+	<span style="color: #666666; font-style: italic">//p/q / (a+ib) = pqa/(a^2q^2 + b^2q^2) - i pqb/(a^2q^2 + b^2q^2)</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((numerator <span style="color: #333333">*</span> denominator <span style="color: #333333">*</span> arg.get_realComponent()) <span style="color: #333333">/</span> (denominator <span style="color: #333333">*</span> denominator <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> denominator <span style="color: #333333">*</span> denominator <span style="color: #333333">*</span> arg.get_imagComponent() <span style="color: #333333">*</span> arg.get_imagComponent()), <span style="color: #333333">-</span>(numerator <span style="color: #333333">*</span> denominator <span style="color: #333333">*</span> arg.get_imagComponent()) <span style="color: #333333">/</span> (denominator <span style="color: #333333">*</span> denominator <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> denominator <span style="color: #333333">*</span> denominator <span style="color: #333333">*</span> arg.get_imagComponent() <span style="color: #333333">*</span> arg.get_imagComponent()));
+
+}<span style="color: #666666; font-style: italic">//end divides</span>
+
+<span style="color: #666666; font-style: italic">/***************************************RATIONAL &amp; REAL**********************************************/</span>
+RealNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//adding a rational and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber((arg.get_value() <span style="color: #333333">*</span> denominator <span style="color: #333333">+</span> numerator) <span style="color: #333333">/</span> denominator);
+
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+RealNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//substracting a rational and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber((numerator <span style="color: #333333">-</span> arg.get_value() <span style="color: #333333">*</span> denominator) <span style="color: #333333">/</span> denominator);
+
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+RealNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//multiplying a rational and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber((numerator <span style="color: #333333">*</span> arg.get_value()) <span style="color: #333333">/</span> denominator);
+
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+RealNumber RationalNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//dividing a rational and a real</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber(numerator <span style="color: #333333">/</span> (denominator <span style="color: #333333">*</span> arg.get_value()));
+	
+}<span style="color: #666666; font-style: italic">//end divides</span>
+
+
+<span style="color: #666666; font-style: italic">//to_String converts numerator and denominator to string of type num/denom</span>
+string RationalNumber<span style="color: #333333">::</span>to_String(<span style="color: #6666ff; font-weight: bold">void</span>){
+	stringstream my_output;
+	my_output <span style="color: #333333">&lt;&lt;</span> numerator <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;/&quot;</span> <span style="color: #333333">&lt;&lt;</span> denominator;
+	<span style="color: #228899; font-weight: bold">return</span> my_output.str();
+}
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+        
+                            <!--RationalNumber.h-->
+                            <section>
+                                <hnew id="RationalNumber.h">RationalNumber.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#ifndef RATIONAL_NUMBER_H</span>
+<span style="color: #557799">#define RATIONAL_NUMBER_H</span>
+
+<span style="color: #557799">#include &quot;Number.h&quot;</span>
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">RationalNumber</span>; <span style="color: #666666; font-style: italic">//This is a forward declaration, needed only to remove circular dependencies</span>
+<span style="color: #557799">#include &quot;ComplexNumber.h&quot;</span>
+<span style="color: #557799">#include &quot;RealNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;stdlib.h&gt;</span>
+
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">RationalNumber</span><span style="color: #333333">:</span><span style="color: #228899; font-weight: bold">public</span> Number{
+	<span style="color: #997700; font-weight: bold">private:</span>
+		<span style="color: #666666; font-style: italic">//Class variables</span>
+		<span style="color: #6666ff; font-weight: bold">int</span> numerator;
+		<span style="color: #6666ff; font-weight: bold">int</span> denominator;
+
+	<span style="color: #997700; font-weight: bold">public:</span>
+		<span style="color: #666666; font-style: italic">//Empty Constructor</span>
+		RationalNumber();
+		<span style="color: #666666; font-style: italic">//Complete Constructor</span>
+		RationalNumber(<span style="color: #6666ff; font-weight: bold">int</span> numer, <span style="color: #6666ff; font-weight: bold">int</span> denom);
+		
+		<span style="color: #666666; font-style: italic">//Setter and getter functions</span>
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_numerator</span>(<span style="color: #6666ff; font-weight: bold">int</span> numer);
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_denominator</span>(<span style="color: #6666ff; font-weight: bold">int</span> denom);
+		<span style="color: #6666ff; font-weight: bold">int</span> get_numerator(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>;
+		<span style="color: #6666ff; font-weight: bold">int</span> get_denominator(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>;
+
+		<span style="color: #666666; font-style: italic">//Class member functions</span>
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_value</span> (<span style="color: #6666ff; font-weight: bold">int</span> numer, <span style="color: #6666ff; font-weight: bold">int</span> denom);
+		<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">gcd</span>(<span style="color: #6666ff; font-weight: bold">int</span> a, <span style="color: #6666ff; font-weight: bold">int</span> b);
+		<span style="color: #6666ff; font-weight: bold">double</span> <span style="color: #55eedd; font-weight: bold">magnitude</span>();
+		<span style="color: #6666ff; font-weight: bold">double</span> decimal_value() <span style="color: #228899; font-weight: bold">const</span>;
+
+		<span style="color: #666666; font-style: italic">//Operation overload for RationalNumber (op) RationalNumber</span>
+		RationalNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		RationalNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		RationalNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		RationalNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Operation overload for RationalNumber (op) ComplexNumber</span>
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Operation overload for RationalNumber (op) RealNumber</span>
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Output class variables as string (provided)</span>
+		string <span style="color: #55eedd; font-weight: bold">to_String</span>(<span style="color: #6666ff; font-weight: bold">void</span>);
+};
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+                            
+        
+        
+        
+        
+        
+                            <!--Real.cpp-->
+                            <section>
+                                <hnew id="RealNumber.cpp">RealNumber.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;RealNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;math.h&gt;</span>
+
+<span style="color: #666666; font-style: italic">/*</span>
+<span style="color: #666666; font-style: italic"> * AUTHOR:       Lisa Gentil</span>
+<span style="color: #666666; font-style: italic"> * NETID:        gentil2</span>
+<span style="color: #666666; font-style: italic"> * LECTURE:      BL2</span>
+<span style="color: #666666; font-style: italic"> * DISCUSSION:   BD4</span>
+<span style="color: #666666; font-style: italic"> * MP/LAB:       MP12: This week&#39;s machine problem was a sort of calculator that accepts as</span>
+<span style="color: #666666; font-style: italic"> * 			inputs real numbers, rational numbers and complex numbers. </span>
+<span style="color: #666666; font-style: italic"> *			This class focuses on real numbers and the different methods will use </span>
+<span style="color: #666666; font-style: italic"> *			that real number as the first operator and the second operator may be</span>
+<span style="color: #666666; font-style: italic"> *			another real, a rational or a complex number. For an operation with a </span>
+<span style="color: #666666; font-style: italic"> *			real the output value will be a real (so a decimal), same for any </span>
+<span style="color: #666666; font-style: italic"> *			operation with a rational number. Finally when a real is modified with</span>
+<span style="color: #666666; font-style: italic"> *			a complex number the result will be a new complex number.</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> * TERM:         Spring 2016</span>
+<span style="color: #666666; font-style: italic"> * PARTNERS:     N/A</span>
+<span style="color: #666666; font-style: italic"> */</span>
+
+
+<span style="color: #666666; font-style: italic">//empty constructor</span>
+RealNumber<span style="color: #333333">::</span>RealNumber()
+{
+	NumberType <span style="color: #333333">=</span> REAL;
+	value <span style="color: #333333">=</span> <span style="color: #6600EE; font-weight: bold">0.0</span>;
+}<span style="color: #666666; font-style: italic">//end empty constructor</span>
+
+<span style="color: #666666; font-style: italic">//constructor</span>
+RealNumber<span style="color: #333333">::</span>RealNumber(<span style="color: #6666ff; font-weight: bold">double</span> rval)
+{
+	NumberType <span style="color: #333333">=</span> REAL;
+	value <span style="color: #333333">=</span> rval;
+}<span style="color: #666666; font-style: italic">//end constructor</span>
+
+<span style="color: #666666; font-style: italic">//Setter and getter</span>
+<span style="color: #6666ff; font-weight: bold">void</span> RealNumber<span style="color: #333333">::</span>set_value(<span style="color: #6666ff; font-weight: bold">double</span> rval)
+{
+	value <span style="color: #333333">=</span> rval;
+}<span style="color: #666666; font-style: italic">//end setter</span>
+
+<span style="color: #6666ff; font-weight: bold">double</span> RealNumber<span style="color: #333333">::</span>get_value(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>
+{
+	<span style="color: #228899; font-weight: bold">return</span> value;
+}<span style="color: #666666; font-style: italic">//end getter</span>
+
+<span style="color: #666666; font-style: italic">//class member function</span>
+<span style="color: #6666ff; font-weight: bold">double</span> RealNumber<span style="color: #333333">::</span>magnitude()
+{
+	<span style="color: #228899; font-weight: bold">return</span> abs(value);
+}<span style="color: #666666; font-style: italic">//end magnitude</span>
+
+<span style="color: #666666; font-style: italic">/************************************TWO REAL NUMBERS********************************************/</span>
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	 <span style="color: #228899; font-weight: bold">return</span> RealNumber(value <span style="color: #333333">+</span> arg.get_value());
+
+	<span style="color: #666666; font-style: italic">//adding the two reals</span>
+<span style="color: #666666; font-style: italic">//	result.value = value + arg.get_value();</span>
+<span style="color: #666666; font-style: italic">//	return result;</span>
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+        <span style="color: #666666; font-style: italic">//creating new variable</span>
+        RealNumber result;
+
+	<span style="color: #666666; font-style: italic">//substracting the two reals</span>
+	result.value <span style="color: #333333">=</span> value <span style="color: #333333">-</span> arg.get_value();
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	RealNumber result;
+
+	<span style="color: #666666; font-style: italic">//multiplying the two reals</span>
+	result.value <span style="color: #333333">=</span> value <span style="color: #333333">*</span> arg.get_value();
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//creating new variable</span>
+	RealNumber result;
+
+	<span style="color: #666666; font-style: italic">//dividing the two reals</span>
+	result.value <span style="color: #333333">=</span> value <span style="color: #333333">/</span> arg.get_value();
+	<span style="color: #228899; font-weight: bold">return</span> result;
+}<span style="color: #666666; font-style: italic">//end divided</span>
+
+<span style="color: #666666; font-style: italic">/*************************************REAL &amp; COMPLEX*********************************************/</span>
+ComplexNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//adding a real and a complex number</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(value <span style="color: #333333">+</span> arg.get_realComponent(), arg.get_imagComponent());
+
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+ComplexNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//substracting a real and a complex</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(value <span style="color: #333333">-</span> arg.get_realComponent(), <span style="color: #333333">-</span> arg.get_imagComponent());
+
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+ComplexNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//multiplying a real and a complex</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber(value <span style="color: #333333">*</span> arg.get_realComponent(), value <span style="color: #333333">*</span> arg.get_imagComponent());
+
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+ComplexNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//dividing a real by a complex</span>
+	<span style="color: #666666; font-style: italic">// d / (a + ib) = (da/(a^2 + b^2)) + i(-db/(a^2+b^2))</span>
+	<span style="color: #228899; font-weight: bold">return</span> ComplexNumber((value <span style="color: #333333">*</span> arg.get_realComponent()) <span style="color: #333333">/</span> (arg.get_realComponent() <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> arg.get_imagComponent()<span style="color: #333333">*</span> arg.get_imagComponent()), <span style="color: #333333">-</span>(value <span style="color: #333333">*</span> arg.get_imagComponent()) <span style="color: #333333">/</span> (arg.get_realComponent() <span style="color: #333333">*</span> arg.get_realComponent() <span style="color: #333333">+</span> arg.get_imagComponent() <span style="color: #333333">*</span> arg.get_imagComponent()));
+
+}<span style="color: #666666; font-style: italic">//end divide</span>
+
+<span style="color: #666666; font-style: italic">/*************************************REAL &amp; RATIONAL********************************************/</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">+</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//adding a real and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber((arg.get_numerator() <span style="color: #333333">+</span> value <span style="color: #333333">*</span> arg.get_denominator()) <span style="color: #333333">/</span> arg.get_denominator());
+
+}<span style="color: #666666; font-style: italic">//end plus</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">-</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//substracting a real and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber((value <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">-</span> arg.get_numerator()) <span style="color: #333333">/</span> arg.get_denominator());
+
+}<span style="color: #666666; font-style: italic">//end minus</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">*</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//multiplying a real and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber(value <span style="color: #333333">*</span> arg.get_numerator() <span style="color: #333333">/</span> arg.get_denominator());
+
+}<span style="color: #666666; font-style: italic">//end times</span>
+
+RealNumber RealNumber<span style="color: #333333">::</span><span style="color: #228899; font-weight: bold">operator</span><span style="color: #333333">/</span>(<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg)
+{
+	<span style="color: #666666; font-style: italic">//dividing a real and a rational</span>
+	<span style="color: #228899; font-weight: bold">return</span> RealNumber(value <span style="color: #333333">*</span> arg.get_denominator() <span style="color: #333333">/</span> arg.get_numerator());
+
+}<span style="color: #666666; font-style: italic">//end divided</span>
+
+<span style="color: #666666; font-style: italic">//to_String converts real and imaginary components to string of type a+bi</span>
+string RealNumber<span style="color: #333333">::</span>to_String(<span style="color: #6666ff; font-weight: bold">void</span>){
+	stringstream my_output;
+	my_output <span style="color: #333333">&lt;&lt;</span> value;
+	<span style="color: #228899; font-weight: bold">return</span> my_output.str();
+}<span style="color: #666666; font-style: italic">//end to_String</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+        
+        
+                            <!--Real.h-->
+                            <section>
+                                <hnew id="RealNumber.h">RealNumber.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#ifndef REAL_NUMBER_H</span>
+<span style="color: #557799">#define REAL_NUMBER_H</span>
+
+<span style="color: #557799">#include &quot;Number.h&quot;</span>
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">RealNumber</span>;  <span style="color: #666666; font-style: italic">//This is a forward declaration, needed only to remove circular dependencies</span>
+<span style="color: #557799">#include &quot;ComplexNumber.h&quot;</span>
+<span style="color: #557799">#include &quot;RationalNumber.h&quot;</span>
+<span style="color: #557799">#include &lt;stdlib.h&gt;</span>
+
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">RealNumber</span><span style="color: #333333">:</span><span style="color: #228899; font-weight: bold">public</span> Number{
+	<span style="color: #997700; font-weight: bold">private:</span>
+		<span style="color: #666666; font-style: italic">//Class variables</span>
+		<span style="color: #6666ff; font-weight: bold">double</span> value;
+
+	<span style="color: #997700; font-weight: bold">public:</span>
+		<span style="color: #666666; font-style: italic">//Empty Constructor		</span>
+		RealNumber();
+		<span style="color: #666666; font-style: italic">//Complete Constructor</span>
+		RealNumber(<span style="color: #6666ff; font-weight: bold">double</span> rval);
+
+		<span style="color: #666666; font-style: italic">//Setter and getter functions</span>
+		<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">set_value</span>(<span style="color: #6666ff; font-weight: bold">double</span> rval);
+		<span style="color: #6666ff; font-weight: bold">double</span> get_value(<span style="color: #6666ff; font-weight: bold">void</span>) <span style="color: #228899; font-weight: bold">const</span>;
+
+		<span style="color: #666666; font-style: italic">//Class member functions</span>
+		<span style="color: #6666ff; font-weight: bold">double</span> <span style="color: #55eedd; font-weight: bold">magnitude</span>();
+
+		<span style="color: #666666; font-style: italic">//Operation overload for RealNumber (op) RealNumber</span>
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> RealNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Operation overload for RealNumber (op) ComplexNumber</span>
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+		ComplexNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> ComplexNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Operation overload for RealNumber (op) RationalNumber</span>
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">+</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">-</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">*</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+		RealNumber <span style="color: #228899; font-weight: bold">operator</span> <span style="color: #333333">/</span> (<span style="color: #228899; font-weight: bold">const</span> RationalNumber<span style="color: #333333">&amp;</span> arg);
+
+		<span style="color: #666666; font-style: italic">//Output class variables as string (provided)</span>
+		string <span style="color: #55eedd; font-weight: bold">to_String</span>(<span style="color: #6666ff; font-weight: bold">void</span>);
+};
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+                            
+        _____________________________________________________________________________________________________________________________________________________________
+        <br>
+        <br>
+        
+        <!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollgress.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.slidertron.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+        
+        <!--Back to top-->
+        <section id="cta" class="wrapper style3">
+				
+				<ul class="actions">
+					<li><a href="#" class="button big">Back to Top</a></li>
+				</ul>
+            
+            
+                <ul class="actions">
+					<li><a href="index.html" class="button big">Main Menu</a></li>
+				</ul>
+			</section>  
+        
+        <footer id="footer">
+				<ul class="icons">
+					
+					
+					
+					<li><a href="https://www.linkedin.com/in/lisa-gentil-33b45892/" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:gentillisa5@gmail.com" class="icon fa-envelope"><span class="label">Envelope</span></a></li>
+				</ul>
+				
+				<span>
+				Lisa Gentil's Portfolio
+				</span>
+			</footer>
+    </body>
+</html>

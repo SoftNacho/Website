@@ -1,0 +1,1639 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Lisa Gentil - Flappy Bird</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="landing">
+
+		<!-- Header -->
+			<header id="header" class="alt ">
+				<!--
+                <h1><a href="index.html">Drift <span>by Pixelarity</span></a></h1>
+				-->
+                <nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="index.html#one" class="icon fa-angle-down">About Me</a></li>
+                        <li>
+                            <a href="index.html#two" class="icon fa-angle-down">Projects</a>
+							<ul>
+                                <li><a href="OS.html">Operating System NachOS</a></li>
+                                <li><a 
+                                href="LC3b.html">LC-3b Processor
+                                </a></li>
+                                <li><a href="2048.html">2048</a></li>
+                                <li><a href="TicTacToe.html">Tic Tac Toe</a></li>
+                                <li><a href="Adventure.html">Adventure</a></li>
+                                <li><a href="Sudoku.html">Sudoku</a></li>
+                                <li><a href="PhotoEditor.html">Photo Editor</a></li>
+                                <li><a href="FlappyBird.html">Flappy Bird</a></li>
+                                <li><a href="Calculator.html">Calculator</a></li>
+                            </ul>
+                            <li><a href="Resume.html">Résumé</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="bannerFlappy">
+				<div class="inner">
+					<h2>Flappy Bird</h2>
+                    <ul class="actions">
+						<li><a href="index.html" class="button big scrolly">BACK TO MAIN MENU</a></li>
+					</ul>
+				</div>
+			</section>
+         
+        <br>
+        <br>
+        
+       <!--Pic-->
+        <section>
+            <div align="center">  
+                <figure>
+                    <img src="images/block_diagram.png" alt="" />
+                    <figcaption>Block Diagram of Flappy Bird</figcaption>
+                </figure>
+            </div>
+        </section>
+        
+        <br>
+        <!--Presentation of Projects-->
+        <section id="presentation">
+            <div align="center">
+                <h3>Presentation of Project</h3>
+                <p> My partner and I chose to make our version of the famous video game Flappy Bird using a VGA monitor to display the graphics, as well as a keyboard to use as the input device. The main idea for this game is that, using the flappy_bird.sv module, we are forcing a bird to bounce up and down using the keyboard in order to avoid some obstacles (represented as pipes) that move from right to left (as if the bird was actually moving from left to right). We used sprites to display the pipes as well as the bird and the background after having drawn them on Microsoft Paint. A Python script was utilized to convert the MS Paint PNG’s to text files which were integrated with Quartus via ROM’s/sprites. The programming languages used for our were project were SystemVerilog (majority of the modules), C, and Python.</p>
+            </div>
+        </section>
+        
+        
+           <br> 
+        <!--Button-->
+        <div align="center">
+            <a href="#lab8.sv" class="buttonInPage"> lab8.sv </a>
+            <a href="#flappy_bird.sv" class="buttonInPage"> flappy_bird.sv </a>
+            <a href="#color_mapper.sv"class="buttonInPage"> color_mapper.sv </a>
+            <a href="#FSM.sv"class="buttonInPage"> FSM.sv </a>
+            <a href="#HexDriver.sv"class="buttonInPage"> HexDriver.sv </a>
+            <a href="#hpi_io_intf.sv"class="buttonInPage"> hpi_io_intf.sv </a>
+            <a href="#VGA_controller.sv"class="buttonInPage"> VGA_controller.sv </a>
+            <a href="#color_LUT.sv"class="buttonInPage"> color_LUT.sv </a>
+            <a href="#PipeLB.sv"class="buttonInPage"> PipeLB.sv </a>
+            <a href="#Collision.sv"class="buttonInPage"> Collision.sv </a>
+            <a href="#score.sv"class="buttonInPage"> score.sv </a>
+            <a href="#Report"class="buttonInPage"> Report </a>
+        </div>
+        <br> 
+
+        
+        <!--lab8.sv-->
+        <section>
+            <hnew id="lab8.sv">lab8.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> lab8( <span style="color: #0000aa">input</span>               <span style="color: #aa0000">CLOCK_50</span>,
+             <span style="color: #0000aa">input</span>        [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">KEY</span>,          <span style="color: #aaaaaa; font-style: italic">//bit 0 is set up as Reset</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">6</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">HEX0</span>, <span style="color: #aa0000">HEX1</span>,
+				 <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">6</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">HEX2</span>, <span style="color: #aa0000">HEX3</span>,
+             <span style="color: #aaaaaa; font-style: italic">// VGA Interface</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">VGA_R</span>,        <span style="color: #aaaaaa; font-style: italic">//VGA Red</span>
+                                 <span style="color: #aa0000">VGA_G</span>,        <span style="color: #aaaaaa; font-style: italic">//VGA Green</span>
+                                 <span style="color: #aa0000">VGA_B</span>,        <span style="color: #aaaaaa; font-style: italic">//VGA Blue</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span>        <span style="color: #aa0000">VGA_CLK</span>,      <span style="color: #aaaaaa; font-style: italic">//VGA Clock</span>
+                                 <span style="color: #aa0000">VGA_SYNC_N</span>,   <span style="color: #aaaaaa; font-style: italic">//VGA Sync signal</span>
+                                 <span style="color: #aa0000">VGA_BLANK_N</span>,  <span style="color: #aaaaaa; font-style: italic">//VGA Blank signal</span>
+                                 <span style="color: #aa0000">VGA_VS</span>,       <span style="color: #aaaaaa; font-style: italic">//VGA virtical sync signal</span>
+                                 <span style="color: #aa0000">VGA_HS</span>,       <span style="color: #aaaaaa; font-style: italic">//VGA horizontal sync signal</span>
+             <span style="color: #aaaaaa; font-style: italic">// CY7C67200 Interface</span>
+             <span style="color: #0000aa">inout</span>  <span style="color: #0000aa">wire</span>  [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">OTG_DATA</span>,     <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Data bus 16 Bits</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">1</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">OTG_ADDR</span>,     <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Address 2 Bits</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span>        <span style="color: #aa0000">OTG_CS_N</span>,     <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Chip Select</span>
+                                 <span style="color: #aa0000">OTG_RD_N</span>,     <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Write</span>
+                                 <span style="color: #aa0000">OTG_WR_N</span>,     <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Read</span>
+                                 <span style="color: #aa0000">OTG_RST_N</span>,    <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Reset</span>
+             <span style="color: #0000aa">input</span>               <span style="color: #aa0000">OTG_INT</span>,      <span style="color: #aaaaaa; font-style: italic">//CY7C67200 Interrupt</span>
+             <span style="color: #aaaaaa; font-style: italic">// SDRAM Interface for Nios II Software</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">12</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">DRAM_ADDR</span>,    <span style="color: #aaaaaa; font-style: italic">//SDRAM Address 13 Bits</span>
+             <span style="color: #0000aa">inout</span>  <span style="color: #0000aa">wire</span>  [<span style="color: #009999">31</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">DRAM_DQ</span>,      <span style="color: #aaaaaa; font-style: italic">//SDRAM Data 32 Bits</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">1</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">DRAM_BA</span>,      <span style="color: #aaaaaa; font-style: italic">//SDRAM Bank Address 2 Bits</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">DRAM_DQM</span>,     <span style="color: #aaaaaa; font-style: italic">//SDRAM Data Mast 4 Bits</span>
+             <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span>        <span style="color: #aa0000">DRAM_RAS_N</span>,   <span style="color: #aaaaaa; font-style: italic">//SDRAM Row Address Strobe</span>
+                                 <span style="color: #aa0000">DRAM_CAS_N</span>,   <span style="color: #aaaaaa; font-style: italic">//SDRAM Column Address Strobe</span>
+                                 <span style="color: #aa0000">DRAM_CKE</span>,     <span style="color: #aaaaaa; font-style: italic">//SDRAM Clock Enable</span>
+                                 <span style="color: #aa0000">DRAM_WE_N</span>,    <span style="color: #aaaaaa; font-style: italic">//SDRAM Write Enable</span>
+                                 <span style="color: #aa0000">DRAM_CS_N</span>,    <span style="color: #aaaaaa; font-style: italic">//SDRAM Chip Select</span>
+                                 <span style="color: #aa0000">DRAM_CLK</span>      <span style="color: #aaaaaa; font-style: italic">//SDRAM Clock</span>
+	);
+
+   <span style="color: #0000aa">logic</span> Reset_h, Clk, Space_Replace, Pause_Replace;
+   <span style="color: #0000aa">logic</span> [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] keycode;
+
+   <span style="color: #0000aa">assign</span> Clk = <span style="color: #aa0000">CLOCK_50</span>;
+   <span style="color: #0000aa">assign</span> {Reset_h} = ~(<span style="color: #aa0000">KEY</span>[<span style="color: #009999">0</span>]);  <span style="color: #aaaaaa; font-style: italic">// The push buttons are active low</span>
+	<span style="color: #0000aa">assign</span> {Space_Replace} = ~(<span style="color: #aa0000">KEY</span>[<span style="color: #009999">3</span>]);
+	<span style="color: #0000aa">assign</span> {Pause_Replace} = ~(<span style="color: #aa0000">KEY</span>[<span style="color: #009999">2</span>]);
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">1</span>:<span style="color: #009999">0</span>] hpi_addr;
+   <span style="color: #0000aa">logic</span> [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] hpi_data_in, hpi_data_out;
+   <span style="color: #0000aa">logic</span> hpi_r, hpi_w,hpi_cs;
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] DrawX_net, DrawY_net;
+
+   <span style="color: #0000aa">int</span>         <span style="color: #aa0000">RNG</span>;
+   <span style="color: #0000aa">logic</span>       Start;
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">12</span>:<span style="color: #009999">0</span>] PipeLT_X_net, PipeLB_X_net, PipeRT_X_net, PipeRB_X_net, Pipe3T_X_net, Pipe3B_X_net; 
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">12</span>:<span style="color: #009999">0</span>] Pipe4T_X_net, Pipe4B_X_net, Pipe5T_X_net, Pipe5B_X_net, Pipe6T_X_net, Pipe6B_X_net;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  PipeLT_Y_net, PipeLB_Y_net, PipeRT_Y_net, PipeRB_Y_net, Pipe3T_Y_net, Pipe3B_Y_net;  
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  Pipe4T_Y_net, Pipe4B_Y_net, Pipe5T_Y_net, Pipe5B_Y_net, Pipe6T_Y_net, Pipe6B_Y_net;
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_X_net, Bird_Y_net, Bird_W_net, Bird_H_net, Pipe_W;
+	<span style="color: #0000aa">assign</span> Bird_W_net = <span style="color: #009999">50</span>;
+	<span style="color: #0000aa">assign</span> Bird_H_net = <span style="color: #009999">50</span>;
+	<span style="color: #0000aa">assign</span> Pipe_W = <span style="color: #009999">100</span>;
+	
+	<span style="color: #0000aa">logic</span> Reset_net, Go_net, Hit_net, Pause_net, Dead_net;
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Pipe_Loop;
+	<span style="color: #0000aa">assign</span> Pipe_Loop = <span style="color: #009999">12&#39;d1500</span>;
+	<span style="color: #aaaaaa; font-style: italic">//int Pipe_Loop;</span>
+	<span style="color: #aaaaaa; font-style: italic">//assign Pipe_Loop = 1500;</span>
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">4</span>:<span style="color: #009999">0</span>] Ones_net, Tens_net;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">8</span>:<span style="color: #009999">0</span>] Counter_net, Pipe_Count_net;
+	
+    <span style="color: #aaaaaa; font-style: italic">// Interface between NIOS II and EZ-OTG chip</span>
+    hpi_io_intf hpi_io_inst(
+                            .Clk(Clk),
+                            .Reset(<span style="color: #009999">1&#39;b0</span>),
+                            <span style="color: #aaaaaa; font-style: italic">// signals connected to NIOS II</span>
+                            .from_sw_address(hpi_addr),
+                            .from_sw_data_in(hpi_data_in),
+                            .from_sw_data_out(hpi_data_out),
+                            .from_sw_r(hpi_r),
+                            .from_sw_w(hpi_w),
+                            .from_sw_cs(hpi_cs),
+                            <span style="color: #aaaaaa; font-style: italic">// signals connected to EZ-OTG chip</span>
+                            .<span style="color: #aa0000">OTG_DATA</span>(<span style="color: #aa0000">OTG_DATA</span>),
+                            .<span style="color: #aa0000">OTG_ADDR</span>(<span style="color: #aa0000">OTG_ADDR</span>),
+                            .<span style="color: #aa0000">OTG_RD_N</span>(<span style="color: #aa0000">OTG_RD_N</span>),
+                            .<span style="color: #aa0000">OTG_WR_N</span>(<span style="color: #aa0000">OTG_WR_N</span>),
+                            .<span style="color: #aa0000">OTG_CS_N</span>(<span style="color: #aa0000">OTG_CS_N</span>),
+                            .<span style="color: #aa0000">OTG_RST_N</span>(<span style="color: #aa0000">OTG_RST_N</span>)
+     );
+
+     <span style="color: #aaaaaa; font-style: italic">//The connections for nios_system might be named different depending on how you set up Qsys</span>
+     nios_system nios_system(
+                             .clk_clk(Clk),
+                             .reset_reset_n(<span style="color: #009999">1&#39;b1</span>),
+                             .sdram_wire_addr(<span style="color: #aa0000">DRAM_ADDR</span>),
+                             .sdram_wire_ba(<span style="color: #aa0000">DRAM_BA</span>),
+                             .sdram_wire_cas_n(<span style="color: #aa0000">DRAM_CAS_N</span>),
+                             .sdram_wire_cke(<span style="color: #aa0000">DRAM_CKE</span>),
+                             .sdram_wire_cs_n(<span style="color: #aa0000">DRAM_CS_N</span>),
+                             .sdram_wire_dq(<span style="color: #aa0000">DRAM_DQ</span>),
+                             .sdram_wire_dqm(<span style="color: #aa0000">DRAM_DQM</span>),
+                             .sdram_wire_ras_n(<span style="color: #aa0000">DRAM_RAS_N</span>),
+                             .sdram_wire_we_n(<span style="color: #aa0000">DRAM_WE_N</span>),
+                             .sdram_out_clk(<span style="color: #aa0000">DRAM_CLK</span>),
+                             .keycode_export(keycode),
+                             .otg_hpi_address_export(hpi_addr),
+                             .otg_hpi_data_in_port(hpi_data_in),
+                             .otg_hpi_data_out_port(hpi_data_out),
+                             .otg_hpi_cs_export(hpi_cs),
+                             .otg_hpi_r_export(hpi_r),
+                             .otg_hpi_w_export(hpi_w),
+									  <span style="color: #aaaaaa; font-style: italic">// RNG export</span>
+                             .rng_export(<span style="color: #aa0000">RNG</span>)
+     );
+
+    <span style="color: #aaaaaa; font-style: italic">//Fill in the connections for the rest of the modules</span>
+    <span style="color: #aaaaaa; font-style: italic">//VGA_controller vga_controller_instance(.*, .Reset(Reset_h), .DrawX, .DrawY);</span>
+    VGA_controller vga_controller_instance(
+										.Clk(Clk),
+										.Reset(Reset_h),
+
+										.<span style="color: #aa0000">VGA_HS</span>(<span style="color: #aa0000">VGA_HS</span>),
+										.<span style="color: #aa0000">VGA_VS</span>(<span style="color: #aa0000">VGA_VS</span>),
+										.<span style="color: #aa0000">VGA_CLK</span>(<span style="color: #aa0000">VGA_CLK</span>),
+										.<span style="color: #aa0000">VGA_BLANK_N</span>(<span style="color: #aa0000">VGA_BLANK_N</span>),
+										.<span style="color: #aa0000">VGA_SYNC_N</span>(<span style="color: #aa0000">VGA_SYNC_N</span>),
+										.DrawX(DrawX_net),
+										.DrawY(DrawY_net)
+	  );
+
+    <span style="color: #aaaaaa; font-style: italic">//color_mapper color_instance(.*);</span>
+    color_mapper color_instance(
+										.Reset(Reset_h), 			 .reset(Reset_net),
+										.PipeLT_X(PipeLT_X_net), .PipeLT_Y(PipeLT_Y_net),
+										.PipeLB_X(PipeLB_X_net), .PipeLB_Y(PipeLB_Y_net),
+										.PipeRT_X(PipeRT_X_net), .PipeRT_Y(PipeRT_Y_net),
+										.PipeRB_X(PipeRB_X_net), .PipeRB_Y(PipeRB_Y_net),
+										.Pipe3T_X(Pipe3T_X_net), .Pipe3T_Y(Pipe3T_Y_net),
+										.Pipe3B_X(Pipe3B_X_net), .Pipe3B_Y(Pipe3B_Y_net),
+										.Pipe4T_X(Pipe4T_X_net), .Pipe4T_Y(Pipe4T_Y_net),
+										.Pipe4B_X(Pipe4B_X_net), .Pipe4B_Y(Pipe4B_Y_net),
+										.Pipe5T_X(Pipe5T_X_net), .Pipe5T_Y(Pipe5T_Y_net),
+										.Pipe5B_X(Pipe5B_X_net), .Pipe5B_Y(Pipe5B_Y_net),
+										.Pipe6T_X(Pipe6T_X_net), .Pipe6T_Y(Pipe6T_Y_net),
+										.Pipe6B_X(Pipe6B_X_net), .Pipe6B_Y(Pipe6B_Y_net),
+										.Bird_X(Bird_X_net), .Bird_Y(Bird_Y_net),
+										.<span style="color: #aa0000">RNG</span>(<span style="color: #aa0000">RNG</span>),
+										.DrawX(DrawX_net),
+										.DrawY(DrawY_net),
+
+										.<span style="color: #aa0000">VGA_R</span>(<span style="color: #aa0000">VGA_R</span>),
+										.<span style="color: #aa0000">VGA_G</span>(<span style="color: #aa0000">VGA_G</span>),
+										.<span style="color: #aa0000">VGA_B</span>(<span style="color: #aa0000">VGA_B</span>)
+	  );
+	 
+	 <span style="color: #aaaaaa; font-style: italic">// Bird</span>
+	 flappy_bird bird(
+	 <span style="color: #aaaaaa; font-style: italic">//bird bird_inst(</span>
+										.Reset(Reset_h),
+										.Clk(<span style="color: #aa0000">VGA_VS</span>),
+										.Space(Space_Replace),
+										.reset(Reset_net),
+										.go(Go_net),
+										.pause(Pause_net),
+										.dead(Dead_net),
+										.keycode(keycode),
+										.PipeL_X(PipeLT_X_net),     	.PipeR_X(PipeRT_X_net),
+										.Pipe_Space_LT(PipeLT_Y_net), .Pipe_Space_LB(PipeLB_Y_net),
+										.Pipe_Space_RT(PipeRT_Y_net), .Pipe_Space_RB(PipeRB_Y_net), 
+										.PipeW(Pipe_W),
+										
+										.BirdX(Bird_X_net),     .BirdY(Bird_Y_net), 
+										.BirdW_out(Bird_W_net), .BirdH_out(Bird_H_net),
+	 );
+	 <span style="color: #aaaaaa; font-style: italic">// put hit back in</span>
+
+    <span style="color: #aaaaaa; font-style: italic">// Pipes</span>
+    PipeLT <span style="color: #aa0000">LT0</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(PipeLT_X_net),
+                    .PipeY(PipeLT_Y_net),
+    );
+	 
+	 PipeLB <span style="color: #aa0000">LB0</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(PipeLB_X_net),
+                    .PipeY(PipeLB_Y_net),
+    );
+
+    PipeRT <span style="color: #aa0000">RT0</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(PipeRT_X_net),
+                    .PipeY(PipeRT_Y_net),
+    );
+
+    PipeRB <span style="color: #aa0000">RB0</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(PipeRB_X_net),
+                    .PipeY(PipeRB_Y_net),
+    );
+	 
+	 Pipe3T <span style="color: #aa0000">P3T</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe3T_X_net),
+                    .PipeY(Pipe3T_Y_net),
+    );
+
+    Pipe3B <span style="color: #aa0000">P3B</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe3B_X_net),
+                    .PipeY(Pipe3B_Y_net),
+    );
+	 
+	 Pipe4T <span style="color: #aa0000">P4T</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe4T_X_net),
+                    .PipeY(Pipe4T_Y_net),
+    );
+
+    Pipe4B <span style="color: #aa0000">P4B</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe4B_X_net),
+                    .PipeY(Pipe4B_Y_net),
+    );
+	 
+	 Pipe5T <span style="color: #aa0000">P5T</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe5T_X_net),
+                    .PipeY(Pipe5T_Y_net),
+    );
+
+    Pipe5B <span style="color: #aa0000">P5B</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe5B_X_net),
+                    .PipeY(Pipe5B_Y_net),
+    );
+	 
+	 Pipe6T <span style="color: #aa0000">P6T</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe6T_X_net),
+                    .PipeY(Pipe6T_Y_net),
+    );
+
+    Pipe6B <span style="color: #aa0000">P6B</span>(
+                    .Reset(Reset_h),
+                    .Clk(<span style="color: #aa0000">VGA_VS</span>),
+                    .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+                    .Loop(Pipe_Loop),
+
+                    .PipeX(Pipe6B_X_net),
+                    .PipeY(Pipe6B_Y_net),
+    );
+	 
+	 <span style="color: #aaaaaa; font-style: italic">// State machine</span>
+	 <span style="color: #aa0000">FSM</span> <span style="color: #aa0000">FSM0</span>(
+						  .Reset(Reset_h),
+						  .Clk(Clk),
+						  .Space(Space_Replace),
+						  .Pause(Pause_Replace),
+						  .hit(Hit_net),
+						  .keycode(keycode),
+						  
+						  .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+						  .dead(Dead_net)
+	 );
+	 
+	 <span style="color: #aaaaaa; font-style: italic">// Score counter</span>
+	 Score <span style="color: #aa0000">SC0</span>(
+						  .Clk(<span style="color: #aa0000">VGA_VS</span>),
+						  .Reset(Reset_h),
+						  .go(Go_net),
+						  .pause(Pause_net),
+						  .dead(Dead_net),
+						  .PipeL_X(PipeLT_X_net), .PipeR_X(PipeRT_X_net),
+						  .Pipe3_X(Pipe3T_X_net), .Pipe4_X(Pipe4T_X_net),
+						  .Pipe5_X(Pipe5T_X_net), .Pipe6_X(Pipe6T_X_net),
+						  .Bird_X(Bird_X_net),
+						  
+						  .tens_out(Tens_net), .ones_out(Ones_net)
+	 );
+	 
+	 <span style="color: #aaaaaa; font-style: italic">// Collision detection</span>
+	 Collision <span style="color: #aa0000">CL0</span>(
+						  .Clk(<span style="color: #aa0000">VGA_VS</span>),
+						  .Reset(Reset_h),
+						  .reset(Reset_net),
+						  .go(Go_net),
+						  .pause(Pause_net),
+						  .dead(Dead_net),
+						  .PipeL_X(PipeLT_X_net), 		  .PipeR_X(PipeRT_X_net),
+						  .Pipe3_X(Pipe3T_X_net), 		  .Pipe4_X(Pipe4T_X_net),
+						  .Pipe5_X(Pipe5T_X_net), 		  .Pipe6_X(Pipe6T_X_net),
+						  .Pipe_Space_LT(PipeLT_Y_net), .Pipe_Space_LB(PipeLB_Y_net),
+						  .Pipe_Space_RT(PipeRT_Y_net), .Pipe_Space_RB(PipeRB_Y_net),
+						  .Pipe_Space_3T(Pipe3T_Y_net), .Pipe_Space_3B(Pipe3B_Y_net),
+						  .Pipe_Space_4T(Pipe4T_Y_net), .Pipe_Space_4B(Pipe4B_Y_net),
+						  .Pipe_Space_5T(Pipe5T_Y_net), .Pipe_Space_5B(Pipe5B_Y_net),
+						  .Pipe_Space_6T(Pipe6T_Y_net), .Pipe_Space_6B(Pipe6B_Y_net),
+						  .Bird_X(Bird_X_net),          .Bird_Y(Bird_Y_net),
+						  
+						  .hit(Hit_net),
+						  .counter_out(Counter_net),
+						  .pipe_count_out(Pipe_Count_net)
+	 );
+	 
+
+	 
+	 HexDriver hex_inst_0 (Ones_net, <span style="color: #aa0000">HEX0</span>);
+    HexDriver hex_inst_1 (Tens_net, <span style="color: #aa0000">HEX1</span>);
+	 HexDriver hex_inst_2 (<span style="color: #009999">4&#39;h0</span>, <span style="color: #aa0000">HEX2</span>);
+    HexDriver hex_inst_3 (Pipe_Count_net[<span style="color: #009999">3</span>:<span style="color: #009999">0</span>], <span style="color: #aa0000">HEX3</span>);
+
+
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--bird.sv-->
+        <section>
+            <hnew id="flappy_bird.sv">flappy_bird.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> flappy_bird(<span style="color: #0000aa">input</span> 			Reset, Clk, Space, reset, go, pause, dead,
+						 <span style="color: #0000aa">input</span>  [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] keycode,
+						 <span style="color: #0000aa">input</span>  [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  PipeL_X, PipeR_X,
+											Pipe_Space_LT, Pipe_Space_LB,  
+											Pipe_Space_RT, Pipe_Space_RB, 
+											PipeW,
+						 <span style="color: #0000aa">output</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  BirdX, BirdY, BirdW_out, BirdH_out,
+						 <span style="color: #0000aa">output</span> 			hit
+	 );
+
+    <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_X_Pos, Bird_X_Motion, Bird_Y_Pos, Bird_Y_Motion, Bird_Size;
+	 <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] BirdW, BirdH;
+    <span style="color: #0000aa">logic</span> bird_clk;
+
+	<span style="color: #0000aa">assign</span> Bird_Size = <span style="color: #009999">10&#39;d50</span>;
+	<span style="color: #0000aa">assign</span> BirdW = <span style="color: #009999">10&#39;d50</span>;
+	<span style="color: #0000aa">assign</span> BirdH = <span style="color: #009999">10&#39;d50</span>;
+
+    <span style="color: #aaaaaa; font-style: italic">//using 600x480 screen </span>
+    	<span style="color: #aaaaaa; font-style: italic">//setting bird position on center of screen for initialization and reset</span>
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_X_Init_Reset = <span style="color: #009999">10&#39;d295</span>;  <span style="color: #aaaaaa; font-style: italic">// Middle on X</span>
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_Y_Init_Reset = <span style="color: #009999">10&#39;d215</span>;  <span style="color: #aaaaaa; font-style: italic">// Middle on Y</span>
+
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_X_Left_Most = <span style="color: #009999">10&#39;d0</span>;     <span style="color: #aaaaaa; font-style: italic">// Leftmost on X</span>
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_X_Right_Most = <span style="color: #009999">10&#39;d639</span>;  <span style="color: #aaaaaa; font-style: italic">// Rightmost on X</span>
+
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_Y_Top = <span style="color: #009999">10&#39;d0</span>;       	<span style="color: #aaaaaa; font-style: italic">// Topmost on Y</span>
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_Y_Bottom = <span style="color: #009999">10&#39;d479</span>;  	<span style="color: #aaaaaa; font-style: italic">// Bottommost on Y</span>
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Bird_Y_Flap = <span style="color: #009999">10&#39;d1</span>;    	<span style="color: #aaaaaa; font-style: italic">// Step size on Y</span>
+
+
+    <span style="color: #aaaaaa; font-style: italic">//getting bird to move</span>
+    <span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> Clk <span style="color: #0000aa">or</span> <span style="color: #0000aa">posedge</span> Reset)
+    <span style="color: #0000aa">begin</span>: Move_Bird
+    	<span style="color: #0000aa">if</span> (Reset)
+    	<span style="color: #0000aa">begin</span>
+    		Bird_Y_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+    		Bird_X_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+    		Bird_Y_Pos &lt;= Bird_Y_Init_Reset;
+    		Bird_X_Pos &lt;= Bird_X_Init_Reset;
+  			hit = <span style="color: #009999">1&#39;b0</span>;
+    	<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(reset)
+		<span style="color: #0000aa">begin</span>
+    		Bird_Y_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+    		Bird_X_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+    		Bird_Y_Pos &lt;= Bird_Y_Init_Reset;
+    		Bird_X_Pos &lt;= Bird_X_Init_Reset;
+  			hit = <span style="color: #009999">1&#39;b0</span>;
+    	<span style="color: #0000aa">end</span>
+
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(pause)
+		<span style="color: #0000aa">begin</span>
+        Bird_Y_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+		  Bird_X_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(dead)
+		<span style="color: #0000aa">begin</span>
+        Bird_Y_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+		  Bird_X_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+		<span style="color: #0000aa">end</span>
+		
+    	<span style="color: #0000aa">else</span> 
+    	<span style="color: #0000aa">begin</span>
+    		<span style="color: #0000aa">if</span> (go == <span style="color: #009999">1&#39;b1</span>)
+    		<span style="color: #0000aa">begin</span>
+					<span style="color: #aaaaaa; font-style: italic">//if (keycode[7:0] == 8&#39;d44) // space bar?</span>
+					<span style="color: #0000aa">if</span>(keycode[<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] == <span style="color: #009999">8&#39;h2C</span> || Space)
+					<span style="color: #aaaaaa; font-style: italic">//if(Space)</span>
+					<span style="color: #0000aa">begin</span>
+						Bird_Y_Motion &lt;= (~(<span style="color: #009999">10&#39;d4</span>) + <span style="color: #009999">1&#39;b1</span>);
+					<span style="color: #0000aa">end</span>
+
+					<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Space)
+					<span style="color: #0000aa">begin</span>
+						Bird_Y_Motion &lt;= (~(<span style="color: #009999">10&#39;d4</span>) + <span style="color: #009999">1&#39;b1</span>);
+					<span style="color: #0000aa">end</span>
+					
+					<span style="color: #0000aa">else</span>
+					<span style="color: #0000aa">begin</span>
+						Bird_Y_Motion &lt;= Bird_Y_Motion + Bird_Y_Flap;
+					<span style="color: #0000aa">end</span>
+				<span style="color: #aaaaaa; font-style: italic">//end</span>
+			<span style="color: #0000aa">end</span>
+
+			<span style="color: #0000aa">else</span>
+			<span style="color: #0000aa">begin</span>
+				Bird_Y_Motion &lt;= <span style="color: #009999">10&#39;d0</span>;
+			<span style="color: #0000aa">end</span> 
+
+			Bird_Y_Pos &lt;= (Bird_Y_Pos + Bird_Y_Motion);
+
+		<span style="color: #0000aa">end</span>
+	<span style="color: #0000aa">end</span>
+
+	<span style="color: #aaaaaa; font-style: italic">//updating coordinates</span>
+    <span style="color: #0000aa">assign</span> BirdX = Bird_X_Pos;
+    <span style="color: #0000aa">assign</span> BirdY = Bird_Y_Pos;
+	 <span style="color: #0000aa">assign</span> BirdH_out = BirdH;
+	 <span style="color: #0000aa">assign</span> BirdW_out = BirdW;
+	 
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--color_mapper.sv-->
+        <section>
+            <hnew id="color_mapper.sv">color_mapper.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> color_mapper(<span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span>        Reset, reset,
+						  <span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">12</span>:<span style="color: #009999">0</span>] PipeLT_X, PipeLB_X, PipeRT_X, PipeRB_X, 
+													Pipe3T_X, Pipe3B_X, Pipe4T_X, Pipe4B_X, 
+													Pipe5T_X, Pipe5B_X, Pipe6T_X, Pipe6B_X,	
+						  <span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  PipeLT_Y, PipeLB_Y, PipeRT_Y, PipeRB_Y,
+													Pipe3T_Y, Pipe3B_Y, Pipe4T_Y, Pipe4B_Y,
+													Pipe5T_Y, Pipe5B_Y, Pipe6T_Y, Pipe6B_Y,
+													Bird_X, Bird_Y,
+						  <span style="color: #0000aa">input</span> <span style="color: #0000aa">int</span>				<span style="color: #aa0000">RNG</span>,
+						  <span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span>  [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] DrawX, DrawY,
+                    <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">VGA_R</span>, <span style="color: #aa0000">VGA_G</span>, <span style="color: #aa0000">VGA_B</span>
+	);
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">R</span>, <span style="color: #aa0000">G</span>, <span style="color: #aa0000">B</span>;
+
+	<span style="color: #0000aa">int</span> Gap_Size = <span style="color: #009999">150</span>;
+	<span style="color: #0000aa">int</span> Bird_W = <span style="color: #009999">50</span>;
+	<span style="color: #0000aa">int</span> Bird_H = <span style="color: #009999">50</span>;
+	<span style="color: #0000aa">int</span> Pipe_W = <span style="color: #009999">100</span>;
+
+   <span style="color: #0000aa">assign</span> <span style="color: #aa0000">VGA_R</span> = <span style="color: #aa0000">R</span>;
+   <span style="color: #0000aa">assign</span> <span style="color: #aa0000">VGA_G</span> = <span style="color: #aa0000">G</span>;
+   <span style="color: #0000aa">assign</span> <span style="color: #aa0000">VGA_B</span> = <span style="color: #aa0000">B</span>;
+
+	<span style="color: #0000aa">logic</span> Bird_On; 
+	<span style="color: #0000aa">logic</span> PipeLT_On, PipeLB_On;
+	<span style="color: #0000aa">logic</span> PipeRT_On, PipeRB_On; <span style="color: #aaaaaa; font-style: italic">//Background_On;</span>
+	<span style="color: #0000aa">logic</span> Pipe3T_On, Pipe3B_On;
+	<span style="color: #0000aa">logic</span> Pipe4T_On, Pipe4B_On;
+	<span style="color: #0000aa">logic</span> Pipe5T_On, Pipe5B_On;
+	<span style="color: #0000aa">logic</span> Pipe6T_On, Pipe6B_On;
+	<span style="color: #0000aa">logic</span> Title_On;
+
+	<span style="color: #aaaaaa; font-style: italic">// What part of the sprite to be drawn</span>
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Draw_Pixel_Bird_X,   Draw_Pixel_Bird_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_PipeLT_X, Draw_Pixel_PipeLT_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_PipeLB_X, Draw_Pixel_PipeLB_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_PipeRT_X, Draw_Pixel_PipeRT_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_PipeRB_X, Draw_Pixel_PipeRB_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe3T_X, Draw_Pixel_Pipe3T_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe3B_X, Draw_Pixel_Pipe3B_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe4T_X, Draw_Pixel_Pipe4T_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe4B_X, Draw_Pixel_Pipe4B_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe5T_X, Draw_Pixel_Pipe5T_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe5B_X, Draw_Pixel_Pipe5B_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe6T_X, Draw_Pixel_Pipe6T_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] Draw_Pixel_Pipe6B_X, Draw_Pixel_Pipe6B_Y;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  Draw_Pixel_Title_X,  Draw_Pixel_Title_Y;
+	
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Bird_X = DrawX - Bird_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Bird_Y = DrawY - Bird_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeLT_X = DrawX - PipeLT_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeLT_Y = DrawY - PipeLT_Y;		
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeLB_X = DrawX - PipeLB_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeLB_Y = DrawY - PipeLB_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeRT_X = DrawX - PipeRT_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeRT_Y = DrawY - PipeRT_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeRB_X = DrawX - PipeRB_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_PipeRB_Y = DrawY - PipeRB_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe3T_X = DrawX - Pipe3T_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe3T_Y = DrawY - Pipe3T_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe3B_X = DrawX - Pipe3B_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe3B_Y = DrawY - Pipe3B_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe4T_X = DrawX - Pipe4T_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe4T_Y = DrawY - Pipe4T_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe4B_X = DrawX - Pipe4B_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe4B_Y = DrawY - Pipe4B_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe5T_X = DrawX - Pipe5T_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe5T_Y = DrawY - Pipe5T_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe5B_X = DrawX - Pipe5B_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe5B_Y = DrawY - Pipe5B_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe6T_X = DrawX - Pipe6T_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe6T_Y = DrawY - Pipe6T_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe6B_X = DrawX - Pipe6B_X;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Pipe6B_Y = DrawY - Pipe6B_Y;
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Title_X  = DrawX - <span style="color: #009999">10&#39;d169</span>; 
+	<span style="color: #0000aa">assign</span> Draw_Pixel_Title_Y  = DrawY - <span style="color: #009999">10&#39;d50</span>;
+
+	<span style="color: #aaaaaa; font-style: italic">// instantiate sprites (ROMs)</span>
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Bird_R, Bird_G, Bird_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Bird_Color;
+	bird_ROM <span style="color: #aa0000">BR0</span> (.x(Draw_Pixel_Bird_X), .y(Draw_Pixel_Bird_Y), .out(Bird_Color));
+	color_LUT <span style="color: #aa0000">CL0</span>(.inColor(Bird_Color), .R_out(Bird_R), .G_out(Bird_G), .B_out(Bird_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] PipeLT_R, PipeLT_G, PipeLT_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] PipeLT_Color;
+	wholePipeTop_ROM <span style="color: #aa0000">WPTL</span> (.x(Draw_Pixel_PipeLT_X), .y(Draw_Pixel_PipeLT_Y), .out(PipeLT_Color));
+	color_LUT <span style="color: #aa0000">CL1</span>(.inColor(PipeLT_Color), .R_out(PipeLT_R), .G_out(PipeLT_G), .B_out(PipeLT_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] PipeLB_R, PipeLB_G, PipeLB_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] PipeLB_Color;
+	wholePipeBot_ROM <span style="color: #aa0000">WPBL</span> (.x(Draw_Pixel_PipeLB_X), .y(Draw_Pixel_PipeLB_Y), .out(PipeLB_Color));
+	color_LUT <span style="color: #aa0000">CL2</span>(.inColor(PipeLB_Color), .R_out(PipeLB_R), .G_out(PipeLB_G), .B_out(PipeLB_B));
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] PipeRT_R, PipeRT_G, PipeRT_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] PipeRT_Color;
+	wholePipeTop_ROM <span style="color: #aa0000">WPTR</span> (.x(Draw_Pixel_PipeRT_X), .y(Draw_Pixel_PipeRT_Y), .out(PipeRT_Color));
+	color_LUT <span style="color: #aa0000">CL3</span>(.inColor(PipeRT_Color), .R_out(PipeRT_R), .G_out(PipeRT_G), .B_out(PipeRT_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] PipeRB_R, PipeRB_G, PipeRB_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] PipeRB_Color;
+	wholePipeBot_ROM <span style="color: #aa0000">WPBR</span> (.x(Draw_Pixel_PipeRB_X), .y(Draw_Pixel_PipeRB_Y), .out(PipeRB_Color));
+	color_LUT <span style="color: #aa0000">CL4</span>(.inColor(PipeRB_Color), .R_out(PipeRB_R), .G_out(PipeRB_G), .B_out(PipeRB_B));
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe3T_R, Pipe3T_G, Pipe3T_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe3T_Color;
+	wholePipeTop_ROM <span style="color: #aa0000">WPT3</span> (.x(Draw_Pixel_Pipe3T_X), .y(Draw_Pixel_Pipe3T_Y), .out(Pipe3T_Color));
+	color_LUT <span style="color: #aa0000">CL5</span>(.inColor(Pipe3T_Color), .R_out(Pipe3T_R), .G_out(Pipe3T_G), .B_out(Pipe3T_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe3B_R, Pipe3B_G, Pipe3B_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe3B_Color;
+	wholePipeBot_ROM <span style="color: #aa0000">WPB3</span> (.x(Draw_Pixel_Pipe3B_X), .y(Draw_Pixel_Pipe3B_Y), .out(Pipe3B_Color));
+	color_LUT <span style="color: #aa0000">CL6</span>(.inColor(Pipe3B_Color), .R_out(Pipe3B_R), .G_out(Pipe3B_G), .B_out(Pipe3B_B));
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe4T_R, Pipe4T_G, Pipe4T_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe4T_Color;
+	wholePipeTop_ROM <span style="color: #aa0000">WPT4</span> (.x(Draw_Pixel_Pipe4T_X), .y(Draw_Pixel_Pipe4T_Y), .out(Pipe4T_Color));
+	color_LUT <span style="color: #aa0000">CL7</span>(.inColor(Pipe4T_Color), .R_out(Pipe4T_R), .G_out(Pipe4T_G), .B_out(Pipe4T_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe4B_R, Pipe4B_G, Pipe4B_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe4B_Color;
+	wholePipeBot_ROM <span style="color: #aa0000">WPB4</span> (.x(Draw_Pixel_Pipe4B_X), .y(Draw_Pixel_Pipe4B_Y), .out(Pipe4B_Color));
+	color_LUT <span style="color: #aa0000">CL8</span>(.inColor(Pipe4B_Color), .R_out(Pipe4B_R), .G_out(Pipe4B_G), .B_out(Pipe4B_B));
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe5T_R, Pipe5T_G, Pipe5T_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe5T_Color;
+	wholePipeTop_ROM <span style="color: #aa0000">WPT5</span> (.x(Draw_Pixel_Pipe5T_X), .y(Draw_Pixel_Pipe5T_Y), .out(Pipe5T_Color));
+	color_LUT <span style="color: #aa0000">CL9</span>(.inColor(Pipe5T_Color), .R_out(Pipe5T_R), .G_out(Pipe5T_G), .B_out(Pipe5T_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe5B_R, Pipe5B_G, Pipe5B_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe5B_Color;
+	wholePipeBot_ROM <span style="color: #aa0000">WPB5</span> (.x(Draw_Pixel_Pipe5B_X), .y(Draw_Pixel_Pipe5B_Y), .out(Pipe5B_Color));
+	color_LUT <span style="color: #aa0000">CL10</span>(.inColor(Pipe5B_Color), .R_out(Pipe5B_R), .G_out(Pipe5B_G), .B_out(Pipe5B_B));
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe6T_R, Pipe6T_G, Pipe6T_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe6T_Color;
+	wholePipeTop_ROM <span style="color: #aa0000">WPT6</span> (.x(Draw_Pixel_Pipe6T_X), .y(Draw_Pixel_Pipe6T_Y), .out(Pipe6T_Color));
+	color_LUT <span style="color: #aa0000">CL11</span>(.inColor(Pipe6T_Color), .R_out(Pipe6T_R), .G_out(Pipe6T_G), .B_out(Pipe6T_B));
+
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Pipe6B_R, Pipe6B_G, Pipe6B_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Pipe6B_Color;
+	wholePipeBot_ROM <span style="color: #aa0000">WPB6</span> (.x(Draw_Pixel_Pipe6B_X), .y(Draw_Pixel_Pipe6B_Y), .out(Pipe6B_Color));
+	color_LUT <span style="color: #aa0000">CL12</span>(.inColor(Pipe6B_Color), .R_out(Pipe6B_R), .G_out(Pipe6B_G), .B_out(Pipe6B_B));
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] Title_R, Title_G, Title_B;
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] Title_Color;
+	title_ROM <span style="color: #aa0000">TR0</span> (.x(Draw_Pixel_Title_X), .y(Draw_Pixel_Title_Y), .out(Title_Color));
+	color_LUT <span style="color: #aa0000">CL13</span>(.inColor(Title_Color), .R_out(Title_R), .G_out(Title_G), .B_out(Title_B));
+	
+
+  <span style="color: #0000aa">always_comb</span>
+  <span style="color: #0000aa">begin</span>:Draw
+	
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Bird_X) &amp;&amp; (DrawX &lt;= Bird_X + <span style="color: #009999">10&#39;d50</span>) &amp;&amp; (DrawY &gt;= Bird_Y) &amp;&amp; (DrawY &lt;= Bird_Y + <span style="color: #009999">10&#39;d50</span>) )
+			Bird_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Bird_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= PipeLT_X) &amp;&amp; (DrawX &lt;= PipeLT_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d00</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d140</span>) )
+			PipeLT_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span> 
+			PipeLT_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= PipeLB_X) &amp;&amp; (DrawX &lt;= PipeLB_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d290</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d479</span>) )
+			PipeLB_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			PipeLB_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= PipeRT_X) &amp;&amp; (DrawX &lt;= PipeRT_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d00</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d240</span>) )
+			PipeRT_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			PipeRT_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= PipeRB_X) &amp;&amp; (DrawX &lt;= PipeRB_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d390</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d479</span>)  )
+			PipeRB_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			PipeRB_On = <span style="color: #009999">1&#39;b0</span>;
+			
+		<span style="color: #aaaaaa; font-style: italic">// Change values</span>
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe3T_X) &amp;&amp; (DrawX &lt;= Pipe3T_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d00</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d200</span>) )
+			Pipe3T_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe3T_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe3B_X) &amp;&amp; (DrawX &lt;= Pipe3B_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d350</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d479</span>)  )
+			Pipe3B_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe3B_On = <span style="color: #009999">1&#39;b0</span>;
+			
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe4T_X) &amp;&amp; (DrawX &lt;= Pipe4T_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d00</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d100</span>) )
+			Pipe4T_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe4T_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe4B_X) &amp;&amp; (DrawX &lt;= Pipe4B_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d250</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d479</span>)  )
+			Pipe4B_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe4B_On = <span style="color: #009999">1&#39;b0</span>;
+			
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe5T_X) &amp;&amp; (DrawX &lt;= Pipe5T_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d00</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d170</span>) )
+			Pipe5T_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe5T_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe5B_X) &amp;&amp; (DrawX &lt;= Pipe5B_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d320</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d479</span>)  )
+			Pipe5B_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe5B_On = <span style="color: #009999">1&#39;b0</span>;
+			
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe6T_X) &amp;&amp; (DrawX &lt;= Pipe6T_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d00</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d90</span>) )
+			Pipe6T_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe6T_On = <span style="color: #009999">1&#39;b0</span>;
+
+		<span style="color: #0000aa">if</span>( (DrawX &gt;= Pipe6B_X) &amp;&amp; (DrawX &lt;= Pipe6B_X + Pipe_W) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d240</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d479</span>)  )
+			Pipe6B_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Pipe6B_On = <span style="color: #009999">1&#39;b0</span>;
+			
+		<span style="color: #0000aa">if</span>( (Reset || reset) &amp;&amp; (DrawX &gt;= <span style="color: #009999">10&#39;d169</span>) &amp;&amp; (DrawX &lt;= <span style="color: #009999">10&#39;d470</span>) &amp;&amp; (DrawY &gt;= <span style="color: #009999">10&#39;d50</span>) &amp;&amp; (DrawY &lt;= <span style="color: #009999">10&#39;d149</span>) )
+			Title_On = <span style="color: #009999">1&#39;b1</span>;
+		<span style="color: #0000aa">else</span>
+			Title_On = <span style="color: #009999">1&#39;b0</span>;
+		
+
+
+	<span style="color: #0000aa">end</span>
+
+
+   <span style="color: #aaaaaa; font-style: italic">// Assign color based on ball_on signal</span>
+   <span style="color: #0000aa">always_comb</span>
+   <span style="color: #0000aa">begin</span>:RGB_Display
+
+	 	<span style="color: #0000aa">if</span>(Bird_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Bird_R;
+			<span style="color: #aa0000">G</span> = Bird_G;
+			<span style="color: #aa0000">B</span> = Bird_B;
+		<span style="color: #0000aa">end</span>
+
+			
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(PipeLT_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = PipeLT_R;
+			<span style="color: #aa0000">G</span> = PipeLT_G;
+			<span style="color: #aa0000">B</span> = PipeLT_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(PipeLB_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = PipeLB_R;
+			<span style="color: #aa0000">G</span> = PipeLB_G;
+			<span style="color: #aa0000">B</span> = PipeLB_B;
+		<span style="color: #0000aa">end</span>
+
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(PipeRT_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = PipeRT_R;
+			<span style="color: #aa0000">G</span> = PipeRT_G;
+			<span style="color: #aa0000">B</span> = PipeRT_B;
+		<span style="color: #0000aa">end</span>
+
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(PipeRB_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = PipeRB_R;
+			<span style="color: #aa0000">G</span> = PipeRB_G;
+			<span style="color: #aa0000">B</span> = PipeRB_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe3T_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe3T_R;
+			<span style="color: #aa0000">G</span> = Pipe3T_G;
+			<span style="color: #aa0000">B</span> = Pipe3T_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe3B_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe3B_R;
+			<span style="color: #aa0000">G</span> = Pipe3B_G;
+			<span style="color: #aa0000">B</span> = Pipe3B_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe4T_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe4T_R;
+			<span style="color: #aa0000">G</span> = Pipe4T_G;
+			<span style="color: #aa0000">B</span> = Pipe4T_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe4B_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe4B_R;
+			<span style="color: #aa0000">G</span> = Pipe4B_G;
+			<span style="color: #aa0000">B</span> = Pipe4B_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe5T_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe5T_R;
+			<span style="color: #aa0000">G</span> = Pipe5T_G;
+			<span style="color: #aa0000">B</span> = Pipe5T_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe5B_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe5B_R;
+			<span style="color: #aa0000">G</span> = Pipe5B_G;
+			<span style="color: #aa0000">B</span> = Pipe5B_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe6T_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe6T_R;
+			<span style="color: #aa0000">G</span> = Pipe6T_G;
+			<span style="color: #aa0000">B</span> = Pipe6T_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pipe6B_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Pipe6B_R;
+			<span style="color: #aa0000">G</span> = Pipe6B_G;
+			<span style="color: #aa0000">B</span> = Pipe6B_B;
+		<span style="color: #0000aa">end</span>
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Title_On == <span style="color: #009999">1&#39;b1</span>)
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = Title_R;
+			<span style="color: #aa0000">G</span> = Title_G;
+			<span style="color: #aa0000">B</span> = Title_B;
+		<span style="color: #0000aa">end</span>
+
+		<span style="color: #0000aa">else</span>
+		<span style="color: #0000aa">begin</span>
+			<span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d153</span>;
+			<span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d217</span>;
+			<span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d234</span>;
+		<span style="color: #0000aa">end</span>
+
+   <span style="color: #0000aa">end</span>
+	
+	
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+
+<p></p>
+        </section>
+        
+        
+        
+        <!--FSM.sv-->
+        <section>
+            <hnew id="FSM.sv">FSM.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> <span style="color: #aa0000">FSM</span>(<span style="color: #0000aa">input</span>  <span style="color: #0000aa">logic</span>        Reset, Clk, Space, Pause, hit,
+           <span style="color: #0000aa">input</span>  <span style="color: #0000aa">logic</span> [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] keycode,
+           <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span>        reset, go, pause, dead
+  );
+
+  <span style="color: #aaaaaa; font-style: italic">// title later</span>
+  <span style="color: #0000aa">enum</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">1</span>:<span style="color: #009999">0</span>] {<span style="color: #aa0000">RESET</span>, <span style="color: #aa0000">GO</span>, <span style="color: #aa0000">PAUSED</span>, <span style="color: #aa0000">DEAD</span>} State, Next_state;
+
+  <span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> Clk)
+  <span style="color: #0000aa">begin</span>
+    <span style="color: #0000aa">if</span>(Reset) State &lt;= <span style="color: #aa0000">RESET</span>;
+    <span style="color: #0000aa">else</span> State &lt;= Next_state;
+  <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">always_comb</span>
+  <span style="color: #0000aa">begin</span>
+
+	 Next_state = State;
+	 
+    <span style="color: #0000aa">unique</span> <span style="color: #0000aa">case</span>(State)
+    
+	 RESET:
+	 <span style="color: #0000aa">begin</span>
+		
+		<span style="color: #0000aa">if</span>(keycode[<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] == <span style="color: #009999">8&#39;h2C</span>)     Next_state &lt;= <span style="color: #aa0000">GO</span>;
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Space)     Next_state &lt;= <span style="color: #aa0000">GO</span>;
+		<span style="color: #0000aa">else</span>     Next_state &lt;= <span style="color: #aa0000">RESET</span>;
+		
+    <span style="color: #0000aa">end</span>
+	 
+	 GO:    
+	 <span style="color: #0000aa">begin</span>	 
+		<span style="color: #0000aa">if</span>(Reset) 				  Next_state &lt;= <span style="color: #aa0000">RESET</span>;
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pause)		 	  Next_state &lt;= <span style="color: #aa0000">PAUSED</span>;
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(hit == <span style="color: #009999">1&#39;b1</span>)   Next_state &lt;= <span style="color: #aa0000">DEAD</span>;
+		<span style="color: #0000aa">else</span> 					 	  Next_state &lt;= <span style="color: #aa0000">GO</span>;
+    <span style="color: #0000aa">end</span>
+
+	 PAUSED:  
+	 <span style="color: #0000aa">begin</span>
+		<span style="color: #0000aa">if</span>(Reset) 							   Next_state &lt;= <span style="color: #aa0000">RESET</span>;
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(Pause)					 	   Next_state &lt;= <span style="color: #aa0000">GO</span>;
+		<span style="color: #0000aa">else</span>										Next_state &lt;= <span style="color: #aa0000">PAUSED</span>;
+
+	 <span style="color: #0000aa">end</span>
+	 
+	 DEAD:  
+	 <span style="color: #0000aa">begin</span>
+		<span style="color: #0000aa">if</span>(Reset) 							  Next_state &lt;= <span style="color: #aa0000">RESET</span>;
+		<span style="color: #0000aa">else</span>									  Next_state &lt;= <span style="color: #aa0000">DEAD</span>;
+	 <span style="color: #0000aa">end</span>
+	 
+	 <span style="color: #0000aa">default</span>: ;
+	 <span style="color: #0000aa">endcase</span>
+
+  <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">always_comb</span>
+  <span style="color: #0000aa">begin</span>
+
+    reset = <span style="color: #009999">1&#39;b0</span>;
+    go = <span style="color: #009999">1&#39;b0</span>;
+    pause = <span style="color: #009999">1&#39;b0</span>;
+	 dead = <span style="color: #009999">1&#39;b0</span>;
+
+    <span style="color: #0000aa">unique</span> <span style="color: #0000aa">case</span>(State)
+    RESET:   reset = <span style="color: #009999">1&#39;b1</span>;
+    GO:      go    = <span style="color: #009999">1&#39;b1</span>;
+    PAUSED:	 pause = <span style="color: #009999">1&#39;b1</span>;
+	 DEAD:    dead  = <span style="color: #009999">1&#39;b1</span>;
+	 <span style="color: #0000aa">default</span>: ;
+	 <span style="color: #0000aa">endcase</span>
+
+  <span style="color: #0000aa">end</span>
+
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+        <p></p>    
+        </section>
+        
+        <!--HexDriver.sv-->
+        <section>
+            <hnew id="HexDriver.sv">HexDriver.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> HexDriver (<span style="color: #0000aa">input</span>  [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>]  In0,
+                  <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">6</span>:<span style="color: #009999">0</span>]  Out0);
+	
+	<span style="color: #0000aa">always_comb</span>
+	<span style="color: #0000aa">begin</span>
+		<span style="color: #0000aa">unique</span> <span style="color: #0000aa">case</span> (In0)
+	 	   <span style="color: #009999">4&#39;b0000</span>   : Out0 = <span style="color: #009999">7&#39;b1000000</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;0&#39;</span>
+	 	   <span style="color: #009999">4&#39;b0001</span>   : Out0 = <span style="color: #009999">7&#39;b1111001</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;1&#39;</span>
+		   <span style="color: #009999">4&#39;b0010</span>   : Out0 = <span style="color: #009999">7&#39;b0100100</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;2&#39;</span>
+	 	   <span style="color: #009999">4&#39;b0011</span>   : Out0 = <span style="color: #009999">7&#39;b0110000</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;3&#39;</span>
+	 	   <span style="color: #009999">4&#39;b0100</span>   : Out0 = <span style="color: #009999">7&#39;b0011001</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;4&#39;</span>
+		   <span style="color: #009999">4&#39;b0101</span>   : Out0 = <span style="color: #009999">7&#39;b0010010</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;5&#39;</span>
+	 	   <span style="color: #009999">4&#39;b0110</span>   : Out0 = <span style="color: #009999">7&#39;b0000010</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;6&#39;</span>
+	 	   <span style="color: #009999">4&#39;b0111</span>   : Out0 = <span style="color: #009999">7&#39;b1111000</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;7&#39;</span>
+	 	   <span style="color: #009999">4&#39;b1000</span>   : Out0 = <span style="color: #009999">7&#39;b0000000</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;8&#39;</span>
+		   <span style="color: #009999">4&#39;b1001</span>   : Out0 = <span style="color: #009999">7&#39;b0010000</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;9&#39;</span>
+	 	   <span style="color: #009999">4&#39;b1010</span>   : Out0 = <span style="color: #009999">7&#39;b0001000</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;A&#39;</span>
+	 	   <span style="color: #009999">4&#39;b1011</span>   : Out0 = <span style="color: #009999">7&#39;b0000011</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;b&#39;</span>
+	 	   <span style="color: #009999">4&#39;b1100</span>   : Out0 = <span style="color: #009999">7&#39;b1000110</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;C&#39;</span>
+		   <span style="color: #009999">4&#39;b1101</span>   : Out0 = <span style="color: #009999">7&#39;b0100001</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;d&#39;</span>
+	 	   <span style="color: #009999">4&#39;b1110</span>   : Out0 = <span style="color: #009999">7&#39;b0000110</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;E&#39;</span>
+	 	   <span style="color: #009999">4&#39;b1111</span>   : Out0 = <span style="color: #009999">7&#39;b0001110</span>; <span style="color: #aaaaaa; font-style: italic">// &#39;F&#39;</span>
+	 	   <span style="color: #0000aa">default</span>   : Out0 = <span style="color: #009999">7</span>&#39;bX;
+	  	 <span style="color: #0000aa">endcase</span>
+	<span style="color: #0000aa">end</span>
+
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        <!--hpi_io_intf.sv.sv-->
+        <section>
+            <hnew id="hpi_io_intf.sv">hpi_io_intf.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> hpi_io_intf( <span style="color: #0000aa">input</span>        Clk, Reset,
+                    <span style="color: #0000aa">input</span> [<span style="color: #009999">1</span>:<span style="color: #009999">0</span>]  from_sw_address,
+                    <span style="color: #0000aa">output</span>[<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] from_sw_data_in,
+                    <span style="color: #0000aa">input</span> [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] from_sw_data_out,
+                    <span style="color: #0000aa">input</span>        from_sw_r,from_sw_w,from_sw_cs,
+                    <span style="color: #0000aa">inout</span> [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">OTG_DATA</span>,
+                    <span style="color: #0000aa">output</span>[<span style="color: #009999">1</span>:<span style="color: #009999">0</span>]  <span style="color: #aa0000">OTG_ADDR</span>,
+                    <span style="color: #0000aa">output</span>       <span style="color: #aa0000">OTG_RD_N</span>, <span style="color: #aa0000">OTG_WR_N</span>, <span style="color: #aa0000">OTG_CS_N</span>, <span style="color: #aa0000">OTG_RST_N</span>
+                   );
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">15</span>:<span style="color: #009999">0</span>] from_sw_data_out_buffer;
+
+
+	<span style="color: #0000aa">assign</span> <span style="color: #aa0000">OTG_DATA</span> = <span style="color: #aa0000">OTG_WR_N</span> ? <span style="color: #009999">16</span>&#39;hZZZZZZZZZZZZZZZZ : from_sw_data_out_buffer;
+	<span style="color: #0000aa">assign</span> <span style="color: #aa0000">OTG_RST_N</span> = ~Reset;
+
+	<span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> Clk)
+	<span style="color: #0000aa">begin</span>
+		 <span style="color: #0000aa">if</span>(Reset)
+		 <span style="color: #0000aa">begin</span>
+			  from_sw_data_out_buffer &lt;= <span style="color: #009999">16&#39;h0000</span>;
+			  <span style="color: #aa0000">OTG_ADDR</span>                &lt;= <span style="color: #009999">2&#39;b00</span>;
+			  <span style="color: #aa0000">OTG_RD_N</span>                &lt;= <span style="color: #009999">1&#39;b1</span>;
+			  <span style="color: #aa0000">OTG_WR_N</span>                &lt;= <span style="color: #009999">1&#39;b1</span>;
+			  <span style="color: #aa0000">OTG_CS_N</span>                &lt;= <span style="color: #009999">1&#39;b1</span>;
+			  from_sw_data_in         &lt;= <span style="color: #009999">16&#39;h0000</span>;
+		 <span style="color: #0000aa">end</span>
+		 
+		 <span style="color: #0000aa">else</span> 
+		 <span style="color: #0000aa">begin</span>
+			  from_sw_data_out_buffer &lt;= from_sw_data_out;
+			  <span style="color: #aa0000">OTG_ADDR</span>                &lt;= from_sw_address;
+			  <span style="color: #aa0000">OTG_RD_N</span>                &lt;= from_sw_r;
+			  <span style="color: #aa0000">OTG_WR_N</span>                &lt;= from_sw_w;
+			  <span style="color: #aa0000">OTG_CS_N</span>                &lt;= from_sw_cs;
+			  from_sw_data_in         &lt;= <span style="color: #aa0000">OTG_DATA</span>;
+		 <span style="color: #0000aa">end</span>
+	<span style="color: #0000aa">end</span>
+	<span style="color: #0000aa">endmodule</span> 
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--VGA_controller.sv-->
+        <section>
+            <hnew id="VGA_controller.sv">VGA_controller.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span>  VGA_controller (<span style="color: #0000aa">input</span>              Clk,         <span style="color: #aaaaaa; font-style: italic">// 50 MHz clock</span>
+                                           Reset,       <span style="color: #aaaaaa; font-style: italic">// reset signal</span>
+                        <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span>       <span style="color: #aa0000">VGA_HS</span>,      <span style="color: #aaaaaa; font-style: italic">// Horizontal sync pulse.  Active low</span>
+                                           <span style="color: #aa0000">VGA_VS</span>,      <span style="color: #aaaaaa; font-style: italic">// Vertical sync pulse.  Active low</span>
+                                           <span style="color: #aa0000">VGA_CLK</span>,     <span style="color: #aaaaaa; font-style: italic">// 25 MHz VGA clock output</span>
+                                           <span style="color: #aa0000">VGA_BLANK_N</span>, <span style="color: #aaaaaa; font-style: italic">// Blanking interval indicator.  Active low.</span>
+                                           <span style="color: #aa0000">VGA_SYNC_N</span>,  <span style="color: #aaaaaa; font-style: italic">// Composite Sync signal.  Active low.  We don&#39;t use it in this lab,</span>
+                                                        <span style="color: #aaaaaa; font-style: italic">// but the video DAC on the DE2 board requires an input for it.</span>
+                        <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] DrawX,       <span style="color: #aaaaaa; font-style: italic">// horizontal coordinate</span>
+                                           DrawY        <span style="color: #aaaaaa; font-style: italic">// vertical coordinate</span>
+                        );     
+    
+    <span style="color: #aaaaaa; font-style: italic">// 800 pixels per line (including front/back porch</span>
+    <span style="color: #aaaaaa; font-style: italic">// 525 lines per frame (including front/back porch)</span>
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">H_TOTAL</span> = <span style="color: #009999">10&#39;d800</span>;
+    <span style="color: #0000aa">parameter</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">V_TOTAL</span> = <span style="color: #009999">10&#39;d525</span>;
+    
+    <span style="color: #0000aa">logic</span> VGA_HS_in, VGA_VS_in, VGA_BLANK_N_in;
+    <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] h_counter, v_counter;
+    <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] h_counter_in, v_counter_in;
+    
+    <span style="color: #0000aa">assign</span> <span style="color: #aa0000">VGA_SYNC_N</span> = <span style="color: #009999">1&#39;b0</span>;
+    <span style="color: #0000aa">assign</span> DrawX = h_counter;
+    <span style="color: #0000aa">assign</span> DrawY = v_counter;
+
+    <span style="color: #aaaaaa; font-style: italic">// Generate VGA_CLK</span>
+    <span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> Clk)
+    <span style="color: #0000aa">begin</span>
+        <span style="color: #0000aa">if</span> (Reset)
+        <span style="color: #0000aa">begin</span>
+            <span style="color: #aa0000">VGA_CLK</span> &lt;= <span style="color: #009999">1&#39;b0</span>;
+        <span style="color: #0000aa">end</span>
+        <span style="color: #0000aa">else</span>
+        <span style="color: #0000aa">begin</span>
+            <span style="color: #aa0000">VGA_CLK</span> &lt;= ~<span style="color: #aa0000">VGA_CLK</span>;
+        <span style="color: #0000aa">end</span>
+    <span style="color: #0000aa">end</span>
+    
+    <span style="color: #aaaaaa; font-style: italic">// VGA control signals</span>
+    <span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> <span style="color: #aa0000">VGA_CLK</span> <span style="color: #0000aa">or</span> <span style="color: #0000aa">posedge</span> Reset)
+    <span style="color: #0000aa">begin</span>
+        <span style="color: #0000aa">if</span> (Reset)
+        <span style="color: #0000aa">begin</span>
+            <span style="color: #aa0000">VGA_HS</span> &lt;= <span style="color: #009999">1&#39;b0</span>;
+            <span style="color: #aa0000">VGA_VS</span> &lt;= <span style="color: #009999">1&#39;b0</span>;
+            <span style="color: #aa0000">VGA_BLANK_N</span> &lt;= <span style="color: #009999">1&#39;b0</span>;
+            h_counter &lt;= <span style="color: #009999">10&#39;d0</span>;
+            v_counter &lt;= <span style="color: #009999">10&#39;d0</span>;
+        <span style="color: #0000aa">end</span>
+        <span style="color: #0000aa">else</span>
+        <span style="color: #0000aa">begin</span>
+            <span style="color: #aa0000">VGA_HS</span> &lt;= VGA_HS_in;
+            <span style="color: #aa0000">VGA_VS</span> &lt;= VGA_VS_in;
+            <span style="color: #aa0000">VGA_BLANK_N</span> &lt;= VGA_BLANK_N_in;
+            h_counter &lt;= h_counter_in;
+            v_counter &lt;= v_counter_in;
+        <span style="color: #0000aa">end</span>
+    <span style="color: #0000aa">end</span>
+    
+    <span style="color: #0000aa">always_comb</span>
+    <span style="color: #0000aa">begin</span>
+        <span style="color: #aaaaaa; font-style: italic">// horizontal and vertical counter</span>
+        h_counter_in = h_counter + <span style="color: #009999">10&#39;d1</span>;
+        v_counter_in = v_counter;
+        <span style="color: #0000aa">if</span>(h_counter + <span style="color: #009999">10&#39;d1</span> == <span style="color: #aa0000">H_TOTAL</span>)
+        <span style="color: #0000aa">begin</span>
+            h_counter_in = <span style="color: #009999">10&#39;d0</span>;
+            <span style="color: #0000aa">if</span>(v_counter + <span style="color: #009999">10&#39;d1</span> == <span style="color: #aa0000">V_TOTAL</span>)
+                v_counter_in = <span style="color: #009999">10&#39;d0</span>;
+            <span style="color: #0000aa">else</span>
+                v_counter_in = v_counter + <span style="color: #009999">10&#39;d1</span>;
+        <span style="color: #0000aa">end</span>
+        <span style="color: #aaaaaa; font-style: italic">// Horizontal sync pulse is 96 pixels long at pixels 656-752</span>
+        <span style="color: #aaaaaa; font-style: italic">// (Signal is registered to ensure clean output waveform)</span>
+        VGA_HS_in = <span style="color: #009999">1&#39;b1</span>;
+        <span style="color: #0000aa">if</span>(h_counter_in &gt;= <span style="color: #009999">10&#39;d656</span> &amp;&amp; h_counter_in &lt; <span style="color: #009999">10&#39;d752</span>)
+            VGA_HS_in = <span style="color: #009999">1&#39;b0</span>;
+        <span style="color: #aaaaaa; font-style: italic">// Vertical sync pulse is 2 lines (800 pixels each) long at line 490-491</span>
+        <span style="color: #aaaaaa; font-style: italic">//(Signal is registered to ensure clean output waveform)</span>
+        VGA_VS_in = <span style="color: #009999">1&#39;b1</span>;
+        <span style="color: #0000aa">if</span>(v_counter_in &gt;= <span style="color: #009999">10&#39;d490</span> &amp;&amp; v_counter_in &lt; <span style="color: #009999">10&#39;d492</span>)
+            VGA_VS_in = <span style="color: #009999">1&#39;b0</span>;
+        <span style="color: #aaaaaa; font-style: italic">// Display pixels (inhibit blanking) between horizontal 0-639 and vertical 0-479 (640x480)</span>
+        VGA_BLANK_N_in = <span style="color: #009999">1&#39;b0</span>;
+        <span style="color: #0000aa">if</span>(h_counter_in &lt; <span style="color: #009999">10&#39;d640</span> &amp;&amp; v_counter_in &lt; <span style="color: #009999">10&#39;d480</span>)
+            VGA_BLANK_N_in = <span style="color: #009999">1&#39;b1</span>;
+    <span style="color: #0000aa">end</span>
+    
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--color_LUT.sv-->
+        <section>
+            <hnew id="color_LUT.sv">color_LUT.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> color_LUT(<span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span>  [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] inColor,
+                 <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] R_out, G_out, B_out
+                 );
+
+  <span style="color: #0000aa">logic</span> [<span style="color: #009999">7</span>:<span style="color: #009999">0</span>] <span style="color: #aa0000">R</span>, <span style="color: #aa0000">G</span>, <span style="color: #aa0000">B</span>;
+
+  <span style="color: #0000aa">always_comb</span>
+  <span style="color: #0000aa">begin</span>
+	 
+  <span style="color: #0000aa">unique</span> <span style="color: #0000aa">case</span>(inColor)
+    <span style="color: #009999">8&#39;d1</span>:
+    <span style="color: #0000aa">begin</span> <span style="color: #aaaaaa; font-style: italic">// black pipe</span>
+      <span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d0</span>;
+      <span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d0</span>;
+      <span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d0</span>;
+    <span style="color: #0000aa">end</span>
+
+    <span style="color: #009999">8&#39;d2</span>: <span style="color: #aaaaaa; font-style: italic">// green pipe</span>
+    <span style="color: #0000aa">begin</span>
+      <span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d34</span>;
+      <span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d177</span>;
+      <span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d76</span>;
+    <span style="color: #0000aa">end</span>
+
+    <span style="color: #009999">8&#39;d3</span>: <span style="color: #aaaaaa; font-style: italic">// blue background</span>
+    <span style="color: #0000aa">begin</span>
+      <span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d153</span>;
+      <span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d217</span>;
+      <span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d234</span>;
+    <span style="color: #0000aa">end</span>
+
+    <span style="color: #009999">8&#39;d5</span>: <span style="color: #aaaaaa; font-style: italic">// white background</span>
+    <span style="color: #0000aa">begin</span>
+      <span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d255</span>;
+      <span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d255</span>;
+      <span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d255</span>;
+    <span style="color: #0000aa">end</span>
+
+    <span style="color: #009999">8&#39;d7</span>: <span style="color: #aaaaaa; font-style: italic">// red bird</span>
+    <span style="color: #0000aa">begin</span>
+      <span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d237</span>;
+      <span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d28</span>;
+      <span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d36</span>;
+    <span style="color: #0000aa">end</span>
+
+    <span style="color: #009999">8&#39;d8</span>: <span style="color: #aaaaaa; font-style: italic">// gold bird</span>
+    <span style="color: #0000aa">begin</span>
+      <span style="color: #aa0000">R</span> = <span style="color: #009999">8&#39;d255</span>;
+      <span style="color: #aaaaaa; font-style: italic">//G = 8&#39;d201;</span>
+      <span style="color: #aa0000">G</span> = <span style="color: #009999">8&#39;d242</span>;
+		<span style="color: #aaaaaa; font-style: italic">//B = 8&#39;d14;</span>
+      <span style="color: #aa0000">B</span> = <span style="color: #009999">8&#39;d0</span>;
+	 <span style="color: #0000aa">end</span>
+	 <span style="color: #0000aa">endcase</span>
+  <span style="color: #0000aa">end</span>
+ 
+  <span style="color: #0000aa">assign</span> R_out = <span style="color: #aa0000">R</span>;
+  <span style="color: #0000aa">assign</span> G_out = <span style="color: #aa0000">G</span>;
+  <span style="color: #0000aa">assign</span> B_out = <span style="color: #aa0000">B</span>;
+
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--PipeLB.sv-->
+        <section>
+            <hnew id="PipeLB.sv">PipeLB.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> PipeLB(<span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span>         Reset, Clk, reset, go, pause,
+              <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] PipeX, Loop,
+				  <span style="color: #aaaaaa; font-style: italic">//input int PipeX, Loop,</span>
+				  <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  PipeY
+  );
+  
+  <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  step, height;
+  <span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] start, x_max, x_position, Pipe_RS_X;
+  
+
+  <span style="color: #0000aa">assign</span> Pipe_RS_X = PipeX + <span style="color: #009999">12&#39;d100</span>;
+  <span style="color: #0000aa">assign</span> x_max = <span style="color: #009999">12&#39;d640</span>;
+  <span style="color: #0000aa">assign</span> start = x_max;
+  <span style="color: #0000aa">assign</span> step = <span style="color: #009999">10&#39;d1</span>;
+  
+  <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>] Temp_Height;
+  <span style="color: #0000aa">assign</span> Temp_Height = <span style="color: #009999">10&#39;d290</span>;
+
+
+  <span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> Clk <span style="color: #0000aa">or</span> <span style="color: #0000aa">posedge</span> Reset)
+  <span style="color: #0000aa">begin</span>
+
+    <span style="color: #0000aa">if</span>(Reset)
+    <span style="color: #0000aa">begin</span>
+		height &lt;= Temp_Height;
+      x_position &lt;= start;
+    <span style="color: #0000aa">end</span>
+	 
+	 <span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(reset)
+	 <span style="color: #0000aa">begin</span>
+		height &lt;= Temp_Height;
+      x_position &lt;= start;
+    <span style="color: #0000aa">end</span>
+
+	 <span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(pause)
+	 <span style="color: #0000aa">begin</span>
+        x_position &lt;= x_position;
+    <span style="color: #0000aa">end</span>
+
+	 
+	 <span style="color: #0000aa">else</span>
+	 <span style="color: #0000aa">begin</span>
+		<span style="color: #aaaaaa; font-style: italic">// reset or pause state</span>
+      <span style="color: #0000aa">if</span>(go == <span style="color: #009999">1&#39;b0</span>)
+        x_position &lt;= x_position;
+		<span style="color: #aaaaaa; font-style: italic">// left edge</span>
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(PipeX &lt;= <span style="color: #009999">12&#39;d0</span> || PipeX &gt;= <span style="color: #009999">12&#39;d4000</span>)
+		<span style="color: #0000aa">begin</span>
+			height &lt;= Temp_Height;
+			x_position &lt;= <span style="color: #009999">12&#39;d1500</span>;
+		<span style="color: #0000aa">end</span>
+		<span style="color: #aaaaaa; font-style: italic">// go</span>
+		<span style="color: #0000aa">else</span> 
+		<span style="color: #0000aa">begin</span>
+			height &lt;= Temp_Height;
+			x_position &lt;= x_position - step;
+		<span style="color: #0000aa">end</span>
+	 <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">assign</span> PipeX = x_position;
+  <span style="color: #0000aa">assign</span> PipeY = height;
+
+<span style="color: #0000aa">endmodule</span>
+
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--Collision.sv-->
+        <section>
+            <hnew id="Collision.sv">Collision.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> Collision(<span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span> 			Clk, Reset, reset, go, pause, dead,
+					  <span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] PipeL_X, PipeR_X, Pipe3_X, 
+												Pipe4_X, Pipe5_X, Pipe6_X,
+												Pipe_Space_LT, Pipe_Space_LB,
+												Pipe_Space_RT, Pipe_Space_RB, 
+												Pipe_Space_3T, Pipe_Space_3B,
+												Pipe_Space_4T, Pipe_Space_4B,
+												Pipe_Space_5T, Pipe_Space_5B,
+												Pipe_Space_6T, Pipe_Space_6B,
+					  <span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">9</span>:<span style="color: #009999">0</span>]  Bird_X, Bird_Y,
+					  <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span>       hit,
+					  <span style="color: #0000aa">output</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">8</span>:<span style="color: #009999">0</span>] counter_out, pipe_count_out
+	);
+	
+	<span style="color: #0000aa">logic</span> [<span style="color: #009999">8</span>:<span style="color: #009999">0</span>] counter, pipe_count;
+	
+	<span style="color: #0000aa">always_ff</span> @(<span style="color: #0000aa">posedge</span> Clk <span style="color: #0000aa">or</span> <span style="color: #0000aa">posedge</span> Reset)
+	<span style="color: #0000aa">begin</span>
+		
+		<span style="color: #0000aa">if</span>(Reset)
+		<span style="color: #0000aa">begin</span>
+			counter &lt;= <span style="color: #009999">9&#39;d0</span>;
+			pipe_count &lt;= <span style="color: #009999">9&#39;d1</span>;
+			hit &lt;= <span style="color: #009999">1&#39;b0</span>;
+		<span style="color: #0000aa">end</span>
+	 
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(reset || pause || dead)
+		<span style="color: #0000aa">begin</span>
+			counter &lt;= counter;
+			pipe_count &lt;= pipe_count;
+			hit &lt;= hit;
+		<span style="color: #0000aa">end</span>
+	
+		
+		<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(go)
+		<span style="color: #0000aa">begin</span>
+		
+			<span style="color: #aaaaaa; font-style: italic">//bird past top</span>
+			<span style="color: #0000aa">if</span>(Bird_Y &lt;= <span style="color: #009999">10&#39;d0</span>) 
+				hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+
+			<span style="color: #aaaaaa; font-style: italic">//bird past bottom</span>
+			<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>((Bird_Y + <span style="color: #009999">10&#39;d50</span>) &gt;= <span style="color: #009999">10&#39;d479</span>)
+				hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+		
+			<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>( (counter &gt;= <span style="color: #009999">9&#39;d295</span> &amp;&amp; pipe_count == <span style="color: #009999">9&#39;d1</span>) || (counter &gt;= <span style="color: #009999">9&#39;d100</span> &amp;&amp; pipe_count &gt; <span style="color: #009999">9&#39;d1</span> ) )
+			<span style="color: #0000aa">begin</span>
+				<span style="color: #aaaaaa; font-style: italic">// 1</span>
+				<span style="color: #0000aa">if</span>( pipe_count == <span style="color: #009999">9&#39;d1</span> &amp;&amp; (Bird_Y &lt;= <span style="color: #009999">12&#39;d140</span> || Bird_Y &gt;= <span style="color: #009999">12&#39;d240</span>) )
+				<span style="color: #0000aa">begin</span>
+					hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+				<span style="color: #0000aa">end</span>
+				
+				<span style="color: #aaaaaa; font-style: italic">// 2</span>
+				<span style="color: #0000aa">if</span>( pipe_count == <span style="color: #009999">9&#39;d2</span> &amp;&amp; (Bird_Y &lt;= <span style="color: #009999">12&#39;d240</span> || Bird_Y &gt;= <span style="color: #009999">12&#39;d340</span>) )
+				<span style="color: #0000aa">begin</span>
+					hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+				<span style="color: #0000aa">end</span>
+				
+				<span style="color: #aaaaaa; font-style: italic">// 3</span>
+				<span style="color: #0000aa">if</span>( pipe_count == <span style="color: #009999">9&#39;d3</span> &amp;&amp; (Bird_Y &lt;= <span style="color: #009999">12&#39;d300</span> || Bird_Y &gt;= <span style="color: #009999">12&#39;d400</span>) )
+				<span style="color: #0000aa">begin</span>
+					hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+				<span style="color: #0000aa">end</span>
+				
+				<span style="color: #aaaaaa; font-style: italic">// 4</span>
+				<span style="color: #0000aa">if</span>( pipe_count == <span style="color: #009999">9&#39;d4</span> &amp;&amp; (Bird_Y &lt;= <span style="color: #009999">12&#39;d100</span> || Bird_Y &gt;= <span style="color: #009999">12&#39;d200</span>) )
+				<span style="color: #0000aa">begin</span>
+					hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+				<span style="color: #0000aa">end</span>
+				
+				<span style="color: #aaaaaa; font-style: italic">// 5</span>
+				<span style="color: #0000aa">if</span>( pipe_count == <span style="color: #009999">9&#39;d5</span> &amp;&amp; (Bird_Y &lt;= <span style="color: #009999">12&#39;d170</span> || Bird_Y &gt;= <span style="color: #009999">12&#39;d270</span>) )
+				<span style="color: #0000aa">begin</span>
+					hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+				<span style="color: #0000aa">end</span>
+				
+				<span style="color: #aaaaaa; font-style: italic">// 6</span>
+				<span style="color: #0000aa">if</span>( pipe_count == <span style="color: #009999">9&#39;d6</span> &amp;&amp; (Bird_Y &lt;= <span style="color: #009999">12&#39;d90</span> || Bird_Y &gt;= <span style="color: #009999">12&#39;d190</span>) )
+				<span style="color: #0000aa">begin</span>
+					hit &lt;= <span style="color: #009999">1&#39;b1</span>;
+				<span style="color: #0000aa">end</span>
+				
+			
+				<span style="color: #0000aa">if</span>(pipe_count == <span style="color: #009999">9&#39;d1</span> &amp;&amp; counter &gt;= <span style="color: #009999">9&#39;d445</span>)
+				<span style="color: #0000aa">begin</span>
+					counter &lt;= <span style="color: #009999">9&#39;d0</span>;
+					pipe_count &lt;= pipe_count + <span style="color: #009999">9&#39;d1</span>;
+				<span style="color: #0000aa">end</span>
+				<span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(pipe_count &gt; <span style="color: #009999">9&#39;d1</span> &amp;&amp; counter &gt;= <span style="color: #009999">9&#39;d225</span>) 
+				<span style="color: #0000aa">begin</span>
+					counter &lt;= <span style="color: #009999">9&#39;d0</span>;
+					pipe_count &lt;= pipe_count + <span style="color: #009999">9&#39;d1</span>;
+				<span style="color: #0000aa">end</span>
+                
+				counter &lt;= counter + <span style="color: #009999">1&#39;d1</span>;
+			<span style="color: #0000aa">end</span>
+			
+			<span style="color: #0000aa">else</span>
+			<span style="color: #0000aa">begin</span>
+				counter &lt;= counter + <span style="color: #009999">9&#39;d1</span>;
+			<span style="color: #0000aa">end</span>
+		<span style="color: #0000aa">end</span>
+
+		<span style="color: #0000aa">else</span>
+		<span style="color: #0000aa">begin</span>
+			counter &lt;= counter + <span style="color: #009999">9&#39;d1</span>;
+			hit &lt;= hit;
+		<span style="color: #0000aa">end</span>
+
+
+  <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">assign</span> counter_out = counter;
+  <span style="color: #0000aa">assign</span> pipe_count_out = pipe_count;
+	
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        
+        <!--score.sv-->
+        <section>
+            <hnew id="score.sv">score.sv</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">module</span> Score(<span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span>        Clk, Reset, go, pause, dead,
+             <span style="color: #0000aa">input</span> <span style="color: #0000aa">logic</span> [<span style="color: #009999">11</span>:<span style="color: #009999">0</span>] PipeL_X, PipeR_X, Pipe3_X,
+										  Pipe4_X, Pipe5_X, Pipe6_X,
+										  Bird_X,
+             <span style="color: #0000aa">output</span>      [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>]  tens_out, ones_out
+  );
+
+  <span style="color: #0000aa">logic</span> [<span style="color: #009999">3</span>:<span style="color: #009999">0</span>] tens, ones;
+  <span style="color: #0000aa">logic</span> [<span style="color: #009999">8</span>:<span style="color: #009999">0</span>] counter, pipe_count;
+
+  
+  <span style="color: #0000aa">always_ff</span> @ (<span style="color: #0000aa">posedge</span> Clk <span style="color: #0000aa">or</span> <span style="color: #0000aa">posedge</span> Reset)
+  <span style="color: #0000aa">begin</span>
+
+    <span style="color: #0000aa">if</span>(Reset)
+    <span style="color: #0000aa">begin</span>
+		counter &lt;= <span style="color: #009999">9&#39;d0</span>;
+		pipe_count &lt;= <span style="color: #009999">9&#39;d0</span>;
+      tens &lt;= <span style="color: #009999">4&#39;d0</span>;
+      ones &lt;= <span style="color: #009999">4&#39;d0</span>;
+    <span style="color: #0000aa">end</span>
+	 
+	 <span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(pause || dead)
+	 <span style="color: #0000aa">begin</span>
+		counter &lt;= counter;
+		pipe_count &lt;= pipe_count;
+		tens &lt;= tens;
+		ones &lt;= ones;
+	 <span style="color: #0000aa">end</span>
+
+    <span style="color: #0000aa">else</span> <span style="color: #0000aa">if</span>(go)
+    <span style="color: #0000aa">begin</span>
+      <span style="color: #0000aa">if</span>( (counter &gt;= <span style="color: #009999">9&#39;d345</span> &amp;&amp; pipe_count == <span style="color: #009999">9&#39;d0</span>) || (counter &gt;= <span style="color: #009999">9&#39;d250</span> &amp;&amp; pipe_count &gt; <span style="color: #009999">9&#39;d0</span> ) )
+      <span style="color: #0000aa">begin</span>
+        <span style="color: #0000aa">if</span>(ones != <span style="color: #009999">4&#39;d9</span>)
+        <span style="color: #0000aa">begin</span>
+          ones &lt;= ones + <span style="color: #009999">1&#39;d1</span>;
+          tens &lt;= tens;
+        <span style="color: #0000aa">end</span>
+		  <span style="color: #0000aa">else</span>
+		  <span style="color: #0000aa">begin</span>
+          ones &lt;= <span style="color: #009999">4&#39;d0</span>;
+          tens &lt;= tens + <span style="color: #009999">1&#39;d1</span>;
+        <span style="color: #0000aa">end</span>
+		  counter &lt;= <span style="color: #009999">9&#39;d0</span>;
+		  pipe_count &lt;= pipe_count + <span style="color: #009999">9&#39;d1</span>;
+		<span style="color: #0000aa">end</span>
+      <span style="color: #0000aa">else</span>
+      <span style="color: #0000aa">begin</span>
+          counter &lt;= counter + <span style="color: #009999">9&#39;d1</span>;
+      <span style="color: #0000aa">end</span>
+    <span style="color: #0000aa">end</span>
+
+    <span style="color: #0000aa">else</span>
+    <span style="color: #0000aa">begin</span>
+      ones &lt;= ones;
+      tens &lt;= tens;
+    <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">end</span>
+
+  <span style="color: #0000aa">assign</span> ones_out = ones;
+  <span style="color: #0000aa">assign</span> tens_out = tens;
+
+<span style="color: #0000aa">endmodule</span>
+</pre></div>
+<p></p>
+        </section>
+        
+        
+        
+        
+        <!--Report-->
+        <section>
+            <hnew id="Report">Report</hnew><br>
+            <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+            <div align="center">
+                <embed src="images/FinalProjectReport.pdf" width="850" height="1100" alt="pdf">
+                
+            </div>
+        </section>
+        
+        
+        _____________________________________________________________________________________________________________________________________________________________
+        <br>
+        <br>
+        
+        
+         <!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollgress.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.slidertron.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+        
+        <!--Back to top-->
+        <section id="cta" class="wrapper style3">
+				
+				<ul class="actions">
+					<li><a href="#" class="button big">Back to Top</a></li>
+				</ul>
+            
+            
+                <ul class="actions">
+					<li><a href="index.html" class="button big">Main Menu</a></li>
+				</ul>
+			</section> 
+        
+        <footer id="footer">
+				<ul class="icons">
+					
+					
+					
+					<li><a href="https://www.linkedin.com/in/lisa-gentil-33b45892/" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:gentillisa5@gmail.com" class="icon fa-envelope"><span class="label">Envelope</span></a></li>
+				</ul>
+				
+				<span>
+				Lisa Gentil's Portfolio
+				</span>
+			</footer>
+    </body>
+</html>

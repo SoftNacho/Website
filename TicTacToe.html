@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Lisa Gentil - Tic Tac Toe</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="landing">
+
+		<!-- Header -->
+			<header id="header" class="alt ">
+				<!--
+                <h1><a href="index.html">Drift <span>by Pixelarity</span></a></h1>
+				-->
+                <nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="index.html#one" class="icon fa-angle-down">About Me</a></li>
+                        <li>
+                            <a href="index.html#two" class="icon fa-angle-down">Projects</a>
+							<ul>
+                                <li><a href="OS.html">Operating System NachOS</a></li>
+                                <li><a 
+                                href="LC3b.html">LC-3b Processor
+                                </a></li>
+                                <li><a href="2048.html">2048</a></li>
+                                <li><a href="TicTacToe.html">Tic Tac Toe</a></li>
+                                <li><a href="Adventure.html">Adventure</a></li>
+                                <li><a href="Sudoku.html">Sudoku</a></li>
+                                <li><a href="PhotoEditor.html">Photo Editor</a></li>
+                                <li><a href="FlappyBird.html">Flappy Bird</a></li>
+                                <li><a href="Calculator.html">Calculator</a></li>
+                            </ul>
+                            <li><a href="Resume.html">Résumé</a></li>
+					</ul>
+				</nav>
+			</header>
+        
+        
+		<!-- Banner -->
+			<section id="bannerTTT">
+				<div class="inner">
+					<h2>Tic Tac Toe</h2>
+                    <ul class="actions">
+						<li><a href="index.html" class="button big scrolly">BACK TO MAIN MENU</a></li>
+					</ul>
+				</div>
+			</section>
+        
+        
+        <br> 
+        <!--Button-->
+        <div align="center">
+            
+            <a href="#main.cpp" class="buttonInPage"> main.cpp </a>
+            <a href="#TicTacToe.cpp"class="buttonInPage"> TicTacToe.cpp </a>
+            <a href="#TicTacToe.h"class="buttonInPage"> TicTacToe.h </a>
+        
+        </div>
+        <br> 
+        
+        <div align="center">
+            <video controls autoplay controls class="intelPumpVid"><source src="../../images/TicTacToe.mov" type="video/mp4"></video>
+        </div>
+        
+        <!--File-->
+      
+                            
+                            <section>
+                                <hnew id="main.cpp">main.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #666666; font-style: italic">/*</span>
+<span style="color: #666666; font-style: italic"> * main.cpp</span>
+<span style="color: #666666; font-style: italic"> *</span>
+<span style="color: #666666; font-style: italic"> *  Created on: Jun 12, 2016</span>
+<span style="color: #666666; font-style: italic"> *  Author: lisagentil</span>
+<span style="color: #666666; font-style: italic"> */</span>
+<span style="color: #557799">#include &lt;iostream&gt;</span>
+<span style="color: #557799">#include &quot;TicTacToe.h&quot;</span>
+
+<span style="color: #6666ff; font-weight: bold">int</span> userAnswer;
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">main</span>() {
+	cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;Do you wish to play ? (1 for yes or 0 for no)&quot;</span> <span style="color: #333333">&lt;&lt;</span> endl;
+	cin <span style="color: #333333">&gt;&gt;</span> userAnswer;
+
+	<span style="color: #228899; font-weight: bold">if</span> (userAnswer <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>)
+		cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;End of program.&quot;</span>;
+
+	<span style="color: #228899; font-weight: bold">else</span>
+	{
+		TicTacToe newGame;
+		newGame.reStart();
+		newGame.play();
+	}<span style="color: #666666; font-style: italic">//end else</span>
+}<span style="color: #666666; font-style: italic">//end main</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+                            
+        
+        
+        
+        
+        
+                            <!--TicTacToe.cpp-->
+                            <section>
+                                <hnew id="TicTacToe.cpp">TicTacToe.cpp</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #666666; font-style: italic">//Tic-Tac-Toe Implementation file</span>
+
+<span style="color: #557799">#include &lt;iostream&gt;</span>
+<span style="color: #557799">#include &lt;iomanip&gt;</span>
+
+<span style="color: #557799">#include &quot;TicTacToe.h&quot;</span>
+
+<span style="color: #228899; font-weight: bold">using</span> <span style="color: #228899; font-weight: bold">namespace</span> std;
+
+<span style="color: #6666ff; font-weight: bold">void</span> TicTacToe<span style="color: #333333">::</span>play() {
+	<span style="color: #6666ff; font-weight: bold">bool</span> done <span style="color: #333333">=</span> <span style="color: #007722">false</span>;
+	<span style="color: #6666ff; font-weight: bold">char</span> player <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;X&#39;</span>;
+
+	displayBoard();
+
+	<span style="color: #228899; font-weight: bold">while</span> (<span style="color: #333333">!</span>done) {
+		done <span style="color: #333333">=</span> getXOMove(player);
+
+		<span style="color: #228899; font-weight: bold">if</span> (player <span style="color: #333333">==</span> <span style="color: #8888FF">&#39;X&#39;</span>)
+			player <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;O&#39;</span>;
+		<span style="color: #228899; font-weight: bold">else</span>
+			player <span style="color: #333333">=</span> <span style="color: #8888FF">&#39;X&#39;</span>;
+	} <span style="color: #666666; font-style: italic">//end while</span>
+} <span style="color: #666666; font-style: italic">//end play</span>
+
+<span style="color: #6666ff; font-weight: bold">void</span> TicTacToe<span style="color: #333333">::</span>displayBoard() <span style="color: #228899; font-weight: bold">const</span> {
+	cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;   1    2    3&quot;</span> <span style="color: #333333">&lt;&lt;</span> endl <span style="color: #333333">&lt;&lt;</span> endl;
+
+	<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> row <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; row <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; row<span style="color: #333333">++</span>) {
+		cout <span style="color: #333333">&lt;&lt;</span> row <span style="color: #333333">+</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+
+		<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> col <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; col <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; col<span style="color: #333333">++</span>) {
+			cout <span style="color: #333333">&lt;&lt;</span> setw(<span style="color: #6666ff; font-weight: bold">3</span>) <span style="color: #333333">&lt;&lt;</span> board[row][col];
+
+			<span style="color: #228899; font-weight: bold">if</span> (col <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">2</span>)
+				cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot; |&quot;</span>;
+		} <span style="color: #666666; font-style: italic">//end for col</span>
+
+		cout <span style="color: #333333">&lt;&lt;</span> endl;
+
+		<span style="color: #228899; font-weight: bold">if</span> (row <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">2</span>)
+			cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot; ____|____|____&quot;</span> <span style="color: #333333">&lt;&lt;</span> endl <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;     |    |    &quot;</span> <span style="color: #333333">&lt;&lt;</span> endl;
+	} <span style="color: #666666; font-style: italic">//end for row</span>
+
+	cout <span style="color: #333333">&lt;&lt;</span> endl; 	<span style="color: #666666; font-style: italic">//same as println();</span>
+} 	<span style="color: #666666; font-style: italic">//end displayBoard</span>
+
+<span style="color: #6666ff; font-weight: bold">bool</span> TicTacToe<span style="color: #333333">::</span>isValidMove(<span style="color: #6666ff; font-weight: bold">int</span> row, <span style="color: #6666ff; font-weight: bold">int</span> col) <span style="color: #228899; font-weight: bold">const</span> {
+	<span style="color: #228899; font-weight: bold">if</span> (<span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">&lt;=</span> row <span style="color: #333333">&amp;&amp;</span> row <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">2</span> <span style="color: #333333">&amp;&amp;</span> <span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">&lt;=</span> col <span style="color: #333333">&amp;&amp;</span> col <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">2</span> <span style="color: #333333">&amp;&amp;</span> board[row][col] <span style="color: #333333">==</span> <span style="color: #8888FF">&#39; &#39;</span>)
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">true</span>;
+	<span style="color: #228899; font-weight: bold">else</span>
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">false</span>;
+} 	<span style="color: #666666; font-style: italic">//end isValidMove</span>
+
+<span style="color: #6666ff; font-weight: bold">bool</span> TicTacToe<span style="color: #333333">::</span>getXOMove(<span style="color: #6666ff; font-weight: bold">char</span> playerSymbol) {
+	<span style="color: #6666ff; font-weight: bold">int</span> row, col;
+
+	<span style="color: #228899; font-weight: bold">do</span> {
+		cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;Player &quot;</span> <span style="color: #333333">&lt;&lt;</span> playerSymbol;
+		cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot; enter move (row# enter col#): &quot;</span>;
+		cin <span style="color: #333333">&gt;&gt;</span> row <span style="color: #333333">&gt;&gt;</span> col;
+		cout <span style="color: #333333">&lt;&lt;</span> endl;
+	} 	<span style="color: #666666; font-style: italic">//end do</span>
+	<span style="color: #228899; font-weight: bold">while</span> (<span style="color: #333333">!</span>isValidMove(row <span style="color: #333333">-</span> <span style="color: #6666ff; font-weight: bold">1</span>, col <span style="color: #333333">-</span> <span style="color: #6666ff; font-weight: bold">1</span>));
+
+	row<span style="color: #333333">--</span>;
+	col<span style="color: #333333">--</span>;
+
+	noOfMoves<span style="color: #333333">++</span>;
+
+	board[row][col] <span style="color: #333333">=</span> playerSymbol;
+	displayBoard();
+
+	status gStatus <span style="color: #333333">=</span> gameStatus();
+
+	<span style="color: #228899; font-weight: bold">if</span> (gStatus <span style="color: #333333">==</span> WIN) {
+		cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;Player &quot;</span> <span style="color: #333333">&lt;&lt;</span> playerSymbol <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot; wins!&quot;</span> <span style="color: #333333">&lt;&lt;</span> endl;
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">true</span>;
+	} 	<span style="color: #666666; font-style: italic">//end if</span>
+	<span style="color: #228899; font-weight: bold">else</span> <span style="color: #228899; font-weight: bold">if</span> (gStatus <span style="color: #333333">==</span> DRAW) {
+		cout <span style="color: #333333">&lt;&lt;</span> <span style="background-color: #e0e0ff">&quot;This game is a draw!&quot;</span> <span style="color: #333333">&lt;&lt;</span> endl;
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">true</span>;
+	} 	<span style="color: #666666; font-style: italic">//end else if</span>
+	<span style="color: #228899; font-weight: bold">else</span>
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #007722">false</span>;
+} 	<span style="color: #666666; font-style: italic">//end getXOMove</span>
+
+status TicTacToe<span style="color: #333333">::</span>gameStatus() {
+	<span style="color: #666666; font-style: italic">//Check rows for a win</span>
+	<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> row <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; row <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; row<span style="color: #333333">++</span>)
+		<span style="color: #228899; font-weight: bold">if</span> (board[row][<span style="color: #6666ff; font-weight: bold">0</span>] <span style="color: #333333">!=</span> <span style="color: #8888FF">&#39; &#39;</span> <span style="color: #333333">&amp;&amp;</span> (board[row][<span style="color: #6666ff; font-weight: bold">0</span>] <span style="color: #333333">==</span> board[row][<span style="color: #6666ff; font-weight: bold">1</span>])
+				<span style="color: #333333">&amp;&amp;</span> (board[row][<span style="color: #6666ff; font-weight: bold">1</span>] <span style="color: #333333">==</span> board[row][<span style="color: #6666ff; font-weight: bold">2</span>]))
+			<span style="color: #228899; font-weight: bold">return</span> WIN;
+
+	<span style="color: #666666; font-style: italic">//Check columns for a win</span>
+	<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> col <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; col <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; col<span style="color: #333333">++</span>)
+		<span style="color: #228899; font-weight: bold">if</span> (board[<span style="color: #6666ff; font-weight: bold">0</span>][col] <span style="color: #333333">!=</span> <span style="color: #8888FF">&#39; &#39;</span> <span style="color: #333333">&amp;&amp;</span> (board[<span style="color: #6666ff; font-weight: bold">0</span>][col] <span style="color: #333333">==</span> board[<span style="color: #6666ff; font-weight: bold">1</span>][col])
+				<span style="color: #333333">&amp;&amp;</span> (board[<span style="color: #6666ff; font-weight: bold">1</span>][col] <span style="color: #333333">==</span> board[<span style="color: #6666ff; font-weight: bold">2</span>][col]))
+			<span style="color: #228899; font-weight: bold">return</span> WIN;
+
+	<span style="color: #666666; font-style: italic">//Check diagonals for a win</span>
+	<span style="color: #228899; font-weight: bold">if</span> (board[<span style="color: #6666ff; font-weight: bold">0</span>][<span style="color: #6666ff; font-weight: bold">0</span>] <span style="color: #333333">!=</span> <span style="color: #8888FF">&#39; &#39;</span> <span style="color: #333333">&amp;&amp;</span> (board[<span style="color: #6666ff; font-weight: bold">0</span>][<span style="color: #6666ff; font-weight: bold">0</span>] <span style="color: #333333">==</span> board[<span style="color: #6666ff; font-weight: bold">1</span>][<span style="color: #6666ff; font-weight: bold">1</span>])
+			<span style="color: #333333">&amp;&amp;</span> (board[<span style="color: #6666ff; font-weight: bold">1</span>][<span style="color: #6666ff; font-weight: bold">1</span>] <span style="color: #333333">==</span> board[<span style="color: #6666ff; font-weight: bold">2</span>][<span style="color: #6666ff; font-weight: bold">2</span>]))
+		<span style="color: #228899; font-weight: bold">return</span> WIN;
+
+	<span style="color: #228899; font-weight: bold">if</span> (board[<span style="color: #6666ff; font-weight: bold">2</span>][<span style="color: #6666ff; font-weight: bold">0</span>] <span style="color: #333333">!=</span> <span style="color: #8888FF">&#39; &#39;</span> <span style="color: #333333">&amp;&amp;</span> (board[<span style="color: #6666ff; font-weight: bold">2</span>][<span style="color: #6666ff; font-weight: bold">0</span>] <span style="color: #333333">==</span> board[<span style="color: #6666ff; font-weight: bold">1</span>][<span style="color: #6666ff; font-weight: bold">1</span>])
+			<span style="color: #333333">&amp;&amp;</span> (board[<span style="color: #6666ff; font-weight: bold">1</span>][<span style="color: #6666ff; font-weight: bold">1</span>] <span style="color: #333333">==</span> board[<span style="color: #6666ff; font-weight: bold">0</span>][<span style="color: #6666ff; font-weight: bold">2</span>]))
+		<span style="color: #228899; font-weight: bold">return</span> WIN;
+
+	<span style="color: #228899; font-weight: bold">if</span> (noOfMoves <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">9</span>)
+		<span style="color: #228899; font-weight: bold">return</span> CONTINUE;
+
+	<span style="color: #228899; font-weight: bold">return</span> DRAW;
+} 	<span style="color: #666666; font-style: italic">//end gameStatus</span>
+
+<span style="color: #6666ff; font-weight: bold">void</span> TicTacToe<span style="color: #333333">::</span>reStart() {
+	<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> row <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; row <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; row<span style="color: #333333">++</span>)
+		<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> col <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; col <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; col<span style="color: #333333">++</span>)
+			board[row][col] <span style="color: #333333">=</span> <span style="color: #8888FF">&#39; &#39;</span>;
+
+	noOfMoves <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+} 	<span style="color: #666666; font-style: italic">//end reStart</span>
+
+<span style="color: #666666; font-style: italic">//Constructor</span>
+TicTacToe<span style="color: #333333">::</span>TicTacToe() {
+	<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> row <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; row <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; row<span style="color: #333333">++</span>)
+		<span style="color: #228899; font-weight: bold">for</span> (<span style="color: #6666ff; font-weight: bold">int</span> col <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; col <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">3</span>; col<span style="color: #333333">++</span>)
+			board[row][col] <span style="color: #333333">=</span> <span style="color: #8888FF">&#39; &#39;</span>;
+
+	noOfMoves <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+} 	<span style="color: #666666; font-style: italic">//end ticTacToe</span>
+</pre></div>
+<p></p>
+                            </section>
+                            
+        
+        
+        
+        
+        
+        
+                            <!--TicTacToe.h-->
+                            <hnew id="TicTacToe.h">TicTacToe.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                            <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #666666; font-style: italic">//Tic-Tac-Toe Header file</span>
+
+<span style="color: #557799">#include &lt;string&gt;</span>
+<span style="color: #557799">#ifndef TICTACTOE_H</span>
+<span style="color: #557799">#define TICTACTOE_H</span>
+
+<span style="color: #228899; font-weight: bold">using</span> <span style="color: #228899; font-weight: bold">namespace</span> std;
+
+<span style="color: #228899; font-weight: bold">enum</span> status {WIN, DRAW, CONTINUE};
+
+<span style="color: #228899; font-weight: bold">class</span> <span style="color: #ee99ee; font-weight: bold">TicTacToe</span> {
+  <span style="color: #997700; font-weight: bold">public:</span>
+	<span style="color: #6666ff; font-weight: bold">void</span> play();
+       <span style="color: #666666; font-style: italic">//Function to start the play.</span>
+
+    <span style="color: #6666ff; font-weight: bold">void</span> displayBoard() <span style="color: #228899; font-weight: bold">const</span>;
+       <span style="color: #666666; font-style: italic">//Function to print the board.</span>
+
+    <span style="color: #6666ff; font-weight: bold">bool</span> isValidMove(<span style="color: #6666ff; font-weight: bold">int</span> x, <span style="color: #6666ff; font-weight: bold">int</span> y) <span style="color: #228899; font-weight: bold">const</span>;
+       <span style="color: #666666; font-style: italic">//Function to determine if a move is valid.</span>
+
+	<span style="color: #6666ff; font-weight: bold">bool</span> <span style="color: #55eedd; font-weight: bold">getXOMove</span>(<span style="color: #6666ff; font-weight: bold">char</span> moveSymbol);
+       <span style="color: #666666; font-style: italic">//Function to get a move for a player</span>
+
+    status <span style="color: #55eedd; font-weight: bold">gameStatus</span>();
+       <span style="color: #666666; font-style: italic">//Function to determine the current status of the game.</span>
+
+    <span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">reStart</span>();
+       <span style="color: #666666; font-style: italic">//Function to restart the game.</span>
+
+    TicTacToe();
+       <span style="color: #666666; font-style: italic">//Default constructor.</span>
+       <span style="color: #666666; font-style: italic">//Postcondition: Initializes the board to an empty state.</span>
+
+<span style="color: #997700; font-weight: bold">private:</span>
+    <span style="color: #6666ff; font-weight: bold">char</span> board[<span style="color: #6666ff; font-weight: bold">3</span>][<span style="color: #6666ff; font-weight: bold">3</span>];
+    <span style="color: #6666ff; font-weight: bold">int</span> noOfMoves;
+};
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+                            
+                            
+             _____________________________________________________________________________________________________________________________________________________________
+        <br>
+        <br>
+        
+        <!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollgress.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.slidertron.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+        
+        <!--Back to top-->
+        <section id="cta" class="wrapper style3">
+				
+				<ul class="actions">
+					<li><a href="#" class="button big">Back to Top</a></li>
+				</ul>
+            
+            
+                <ul class="actions">
+					<li><a href="index.html" class="button big">Main Menu</a></li>
+				</ul>
+			</section>  
+        
+        <footer id="footer">
+				<ul class="icons">
+					
+					
+					
+					<li><a href="https://www.linkedin.com/in/lisa-gentil-33b45892/" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:gentillisa5@gmail.com" class="icon fa-envelope"><span class="label">Envelope</span></a></li>
+				</ul>
+				
+				<span>
+				Lisa Gentil's Portfolio
+				</span>
+			</footer>
+        
+    </body>
+</html>

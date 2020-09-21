@@ -1,0 +1,493 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Lisa Gentil - Sudoku Solver</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="landing">
+
+		<!-- Header -->
+			<header id="header" class="alt ">
+				<!--
+                <h1><a href="index.html">Drift <span>by Pixelarity</span></a></h1>
+                -->
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="index.html#one" class="icon fa-angle-down">About Me</a></li>
+                        <li>
+                            <a href="index.html#two" class="icon fa-angle-down">Projects</a>
+							<ul>
+                                <li><a href="OS.html">Operating System NachOS</a></li>
+                                <li><a 
+                                href="LC3b.html">LC-3b Processor
+                                </a></li>
+                                <li><a href="2048.html">2048</a></li>
+                                <li><a href="TicTacToe.html">Tic Tac Toe</a></li>
+                                <li><a href="Adventure.html">Adventure</a></li>
+                                <li><a href="Sudoku.html">Sudoku</a></li>
+                                <li><a href="PhotoEditor.html">Photo Editor</a></li>
+                                <li><a href="FlappyBird.html">Flappy Bird</a></li>
+                                <li><a href="Calculator.html">Calculator</a></li>
+                            </ul>
+                            <li><a href="Resume.html">Résumé</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Banner -->
+			<section id="bannerSudoku">
+				<div class="inner">
+					<h2>Sudoku Solver</h2>
+                    <ul class="actions">
+						<li><a href="index.html" class="button big scrolly">BACK TO MAIN MENU</a></li>
+					</ul>
+				</div>
+			</section>
+        
+        <br> 
+        <!--Buttons-->
+        <div align="center">
+            
+            <a href="#main.c" class="buttonInPage"> main.c </a>
+            <a href="#sudoku.c"class="buttonInPage"> sudoku.c </a>
+            <a href="#sudoku.h"class="buttonInPage"> sudoku.h </a>
+            <a href="#Makefile"class="buttonInPage"> Makefile </a>
+            <a href="#Input"class="buttonInPage"> Input </a>
+            <a href="#Output"class="buttonInPage"> Output </a>
+        
+        </div>
+        
+        <br>
+        <br>
+        <div align="center">
+            <video controls autoplay controls class="intelPumpVid"><source src="../../images/Sudoku.mov" type="video/mp4"></video>
+        </div>
+        
+        <!--File-->
+     
+      <br> 
+                            <section>
+                                <hnew id="main.c">main.c</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;sudoku.h&quot;</span>
+<span style="color: #557799">#include &quot;sudoku_golden.h&quot;</span>
+
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">main</span>(<span style="color: #6666ff; font-weight: bold">int</span> argc, <span style="color: #6666ff; font-weight: bold">char</span> <span style="color: #333333">**</span>argv) {
+
+  <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>];
+
+  <span style="color: #228899; font-weight: bold">if</span>(argc <span style="color: #333333">!=</span> <span style="color: #6666ff; font-weight: bold">2</span>) {
+    printf(<span style="background-color: #e0e0ff">&quot;Usage: ./mp7 sudoku_instance.txt</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>);
+    exit(EXIT_FAILURE);
+  }
+
+  printf(<span style="background-color: #e0e0ff">&quot;------------------</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>);
+  parse_sudoku(argv[<span style="color: #6666ff; font-weight: bold">1</span>], sudoku);
+  printf(<span style="background-color: #e0e0ff">&quot;Input sudoku:</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>);
+  print_sudoku(sudoku);
+  
+  solve_sudoku(sudoku);
+  printf(<span style="background-color: #e0e0ff">&quot;Your output sudoku:</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>);
+  print_sudoku(sudoku);
+  printf(<span style="background-color: #e0e0ff">&quot;------------------</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>);
+
+
+  golden_score_checker(argv[<span style="color: #6666ff; font-weight: bold">1</span>], sudoku);
+  
+  <span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+}
+</pre></div>
+<p></p>
+        
+                            </section>
+                            
+        
+        
+        
+        
+        
+        
+        
+        
+                            <!--Sudoku.c-->
+                            <section>
+                                <hnew id="sudoku.c">sudoku.c</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#include &quot;sudoku.h&quot;</span>
+
+<span style="color: #666666; font-style: italic">/*</span>
+<span style="color: #666666; font-style: italic"> * AUTHOR:       Lisa Gentil</span>
+<span style="color: #666666; font-style: italic"> * NETID:        gentil2</span>
+<span style="color: #666666; font-style: italic"> * LECTURE:      BL2</span>
+<span style="color: #666666; font-style: italic"> * DISCUSSION:   BD4</span>
+<span style="color: #666666; font-style: italic"> * MP/LAB:       MP7: For the machine problem this week, we implemented a sudoku solver.</span>
+<span style="color: #666666; font-style: italic"> *			The way it works very straight forward and uses recursion. There </span>
+<span style="color: #666666; font-style: italic"> *			are a total of 5 functions that we had to implement. The first and </span>
+<span style="color: #666666; font-style: italic"> * 			second functions, respectively, check if the value entered is already</span>
+<span style="color: #666666; font-style: italic"> *			in the row or the column of the cell we are looking at. The third </span>
+<span style="color: #666666; font-style: italic"> *			function checks if that same value has already been used in the 3x3 </span>
+<span style="color: #666666; font-style: italic"> *			zone the cell is in. The fourth function, is_val_valid calls the previous</span>
+<span style="color: #666666; font-style: italic"> *			three functions for a specific row i, column j and value val. If the </span>
+<span style="color: #666666; font-style: italic"> * 			value passes all three checks, it assigned to the cell. Finally, </span>
+<span style="color: #666666; font-style: italic"> *			the solve_sudoku function, first checks if all the cells are filled, </span>
+<span style="color: #666666; font-style: italic"> *			when a non-filled cell is detected it will call is_val_valid which calls</span>
+<span style="color: #666666; font-style: italic"> *			the other functions, and if all the cells are filled, the program stops and</span>
+<span style="color: #666666; font-style: italic"> *			prompts the input sudoku and its solution.</span>
+<span style="color: #666666; font-style: italic"> * TERM:         Spring 2016</span>
+<span style="color: #666666; font-style: italic"> * PARTNERS:     N/A</span>
+<span style="color: #666666; font-style: italic"> */</span>
+
+<span style="color: #666666; font-style: italic">// Procedure: print_sudoku</span>
+<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">print_sudoku</span>(<span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>])
+{
+  <span style="color: #6666ff; font-weight: bold">int</span> i, j;
+  <span style="color: #228899; font-weight: bold">for</span>(i<span style="color: #333333">=</span><span style="color: #6666ff; font-weight: bold">0</span>; i<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>; i<span style="color: #333333">++</span>) {
+    <span style="color: #228899; font-weight: bold">for</span>(j<span style="color: #333333">=</span><span style="color: #6666ff; font-weight: bold">0</span>; j<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>; j<span style="color: #333333">++</span>) {
+      printf(<span style="background-color: #e0e0ff">&quot;%2d&quot;</span>, sudoku[i][j]);
+    }
+    printf(<span style="background-color: #e0e0ff">&quot;</span><span style="color: #666666; font-weight: bold; background-color: #e0e0ff">\n</span><span style="background-color: #e0e0ff">&quot;</span>);
+  }
+}
+
+<span style="color: #666666; font-style: italic">// Procedure: parse_sudoku</span>
+<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">parse_sudoku</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">char</span> fpath[], <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]) {
+  <span style="color: #6666ff; font-weight: bold">FILE</span> <span style="color: #333333">*</span>reader <span style="color: #333333">=</span> fopen(fpath, <span style="background-color: #e0e0ff">&quot;r&quot;</span>);
+  assert(reader <span style="color: #333333">!=</span> <span style="color: #007722">NULL</span>);
+  <span style="color: #6666ff; font-weight: bold">int</span> i, j;
+  <span style="color: #228899; font-weight: bold">for</span>(i<span style="color: #333333">=</span><span style="color: #6666ff; font-weight: bold">0</span>; i<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>; i<span style="color: #333333">++</span>) {
+    <span style="color: #228899; font-weight: bold">for</span>(j<span style="color: #333333">=</span><span style="color: #6666ff; font-weight: bold">0</span>; j<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>; j<span style="color: #333333">++</span>) {
+      fscanf(reader, <span style="background-color: #e0e0ff">&quot;%d&quot;</span>, <span style="color: #333333">&amp;</span>sudoku[i][j]);
+    }
+  }
+  fclose(reader);
+}
+
+<span style="color: #666666; font-style: italic">//-------------------------------------------------------------------------------------------------</span>
+<span style="color: #666666; font-style: italic">// Start coding your MP here.</span>
+<span style="color: #666666; font-style: italic">// ------------------------------------------------------------------------------------------------</span>
+
+<span style="color: #666666; font-style: italic">// Function: is_val_in_row</span>
+<span style="color: #666666; font-style: italic">// Return true if &quot;val&quot; already existed in ith row of array sudoku.</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_in_row</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>])
+{
+
+  	assert(i<span style="color: #333333">&gt;=</span><span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">&amp;&amp;</span> i<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>);
+	
+	<span style="color: #228899; font-weight: bold">for</span>(<span style="color: #6666ff; font-weight: bold">int</span> j <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; j <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">9</span>; j<span style="color: #333333">++</span>)
+	{
+		<span style="color: #228899; font-weight: bold">if</span>(sudoku[i][j] <span style="color: #333333">==</span> val)
+			<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+	}<span style="color: #666666; font-style: italic">//end for</span>
+  
+  
+  	<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+
+}<span style="color: #666666; font-style: italic">//end is_val_in_row</span>
+
+<span style="color: #666666; font-style: italic">/*******************************************************************************************/</span>
+
+<span style="color: #666666; font-style: italic">// Function: is_val_in_col</span>
+<span style="color: #666666; font-style: italic">// Return true if &quot;val&quot; already existed in jth column of array sudoku.</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_in_col</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> j, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]) 
+{
+
+  	assert(j<span style="color: #333333">&gt;=</span><span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">&amp;&amp;</span> j<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>);
+
+	<span style="color: #228899; font-weight: bold">for</span>(<span style="color: #6666ff; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; i <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">9</span>; i<span style="color: #333333">++</span>)
+	{
+		<span style="color: #228899; font-weight: bold">if</span>(sudoku[i][j] <span style="color: #333333">==</span> val)
+			<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+	}<span style="color: #666666; font-style: italic">//end for</span>
+
+  	<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+
+}<span style="color: #666666; font-style: italic">//end is_val_in_col</span>
+
+<span style="color: #666666; font-style: italic">/*******************************************************************************************/</span>
+
+<span style="color: #666666; font-style: italic">// Function: is_val_in_3x3_zone</span>
+<span style="color: #666666; font-style: italic">// Return true if val already existed in the 3x3 zone corresponding to (i, j)</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_in_3x3_zone</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> j, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]) 
+{
+   
+  	assert(i<span style="color: #333333">&gt;=</span><span style="color: #6666ff; font-weight: bold">0</span> <span style="color: #333333">&amp;&amp;</span> i<span style="color: #333333">&lt;</span><span style="color: #6666ff; font-weight: bold">9</span>);
+
+	<span style="color: #6666ff; font-weight: bold">int</span> ii, jj;
+	<span style="color: #666666; font-style: italic">//ii corresponds to the center row index of the 3x3 zone</span>
+	<span style="color: #666666; font-style: italic">//jj corresponds to the center col index of the 3x3 zone</span>
+	<span style="color: #666666; font-style: italic">//assigning ii and jj values depending on i and j values</span>
+	<span style="color: #228899; font-weight: bold">if</span>((i <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">0</span>) <span style="color: #333333">&amp;&amp;</span> (i <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">2</span>))
+		ii <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+
+        <span style="color: #228899; font-weight: bold">if</span>((i <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">3</span>) <span style="color: #333333">&amp;&amp;</span> (i <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">5</span>))
+                ii <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">4</span>;
+
+        <span style="color: #228899; font-weight: bold">if</span>((i <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">6</span>) <span style="color: #333333">&amp;&amp;</span> (i <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">8</span>))
+                ii <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">7</span>;
+
+        <span style="color: #228899; font-weight: bold">if</span>((j <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">0</span>) <span style="color: #333333">&amp;&amp;</span> (j <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">2</span>))
+           	jj <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+                
+        <span style="color: #228899; font-weight: bold">if</span>((j <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">3</span>) <span style="color: #333333">&amp;&amp;</span> (j <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">5</span>))
+             	jj <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">4</span>;
+                
+        <span style="color: #228899; font-weight: bold">if</span>((j <span style="color: #333333">&gt;=</span> <span style="color: #6666ff; font-weight: bold">6</span>) <span style="color: #333333">&amp;&amp;</span> (j <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">8</span>))
+             	jj <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">7</span>;
+
+	<span style="color: #666666; font-style: italic">//checking the 3x3 zone in which (i,j) is included</span>
+      	<span style="color: #228899; font-weight: bold">for</span>(<span style="color: #6666ff; font-weight: bold">int</span> x <span style="color: #333333">=</span> ii<span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>; x <span style="color: #333333">&lt;=</span> ii<span style="color: #333333">+</span><span style="color: #6666ff; font-weight: bold">1</span>; x<span style="color: #333333">++</span>)
+        {
+         	<span style="color: #228899; font-weight: bold">for</span>(<span style="color: #6666ff; font-weight: bold">int</span> y <span style="color: #333333">=</span> jj<span style="color: #333333">-</span><span style="color: #6666ff; font-weight: bold">1</span>; y <span style="color: #333333">&lt;=</span> jj<span style="color: #333333">+</span><span style="color: #6666ff; font-weight: bold">1</span>; y<span style="color: #333333">++</span>)
+              	{
+                   	<span style="color: #228899; font-weight: bold">if</span>(sudoku[x][y] <span style="color: #333333">==</span> val)
+                     	       <span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+       
+            	}<span style="color: #666666; font-style: italic">//end for y</span>
+    	}<span style="color: #666666; font-style: italic">//end for x</span>
+
+  	<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+
+}<span style="color: #666666; font-style: italic">//end is_val_in_3x3_zone</span>
+
+<span style="color: #666666; font-style: italic">/*******************************************************************************************/</span>
+
+<span style="color: #666666; font-style: italic">// Function: is_val_valid</span>
+<span style="color: #666666; font-style: italic">// Return true if the val is can be filled in the given entry.</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_valid</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> j, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]) 
+{
+
+	<span style="color: #6666ff; font-weight: bold">int</span> row_check <span style="color: #333333">=</span> is_val_in_row(val, i, sudoku);
+	<span style="color: #6666ff; font-weight: bold">int</span> col_check <span style="color: #333333">=</span> is_val_in_col(val, j, sudoku);
+	<span style="color: #6666ff; font-weight: bold">int</span> zone_check <span style="color: #333333">=</span> is_val_in_3x3_zone(val, i, j, sudoku); 
+
+	<span style="color: #666666; font-style: italic">//returns 1 if the input value is valid</span>
+  	<span style="color: #228899; font-weight: bold">if</span>((row_check <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>) <span style="color: #333333">&amp;&amp;</span> (col_check <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>) <span style="color: #333333">&amp;&amp;</span> (zone_check <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>))
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>; 
+  
+	<span style="color: #228899; font-weight: bold">else</span>
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+
+}<span style="color: #666666; font-style: italic">//end is_val_valid</span>
+
+<span style="color: #666666; font-style: italic">/*******************************************************************************************/</span>
+
+<span style="color: #666666; font-style: italic">// Procedure: solve_sudoku</span>
+<span style="color: #666666; font-style: italic">// Solve the given sudoku instance.</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">solve_sudoku</span>(<span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]) 
+{
+	<span style="color: #666666; font-style: italic">//declaring new variables</span>
+	<span style="color: #6666ff; font-weight: bold">int</span> i, j, p, q;
+	<span style="color: #6666ff; font-weight: bold">int</span> non_filled_found;
+	
+	<span style="color: #666666; font-style: italic">// check if there is any non-filled cells. If there is, ut breaks out of</span>
+	<span style="color: #666666; font-style: italic">// of both for loops (i and j), find a value that could fill the cell,</span>
+	<span style="color: #666666; font-style: italic">// assign this value to the cell, calls the solve_sudoku function (recursion)	</span>
+	<span style="color: #228899; font-weight: bold">for</span>(i <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; i <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">9</span>; i<span style="color: #333333">++</span>)
+	{
+		<span style="color: #228899; font-weight: bold">for</span>(j <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>; j <span style="color: #333333">&lt;</span> <span style="color: #6666ff; font-weight: bold">9</span>; j<span style="color: #333333">++</span>)
+		{
+			<span style="color: #228899; font-weight: bold">if</span>(sudoku[i][j] <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>)
+			{
+				non_filled_found <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+				<span style="color: #228899; font-weight: bold">break</span>;
+			}<span style="color: #666666; font-style: italic">//end if</span>
+
+		}<span style="color: #666666; font-style: italic">//end for j</span>
+		
+		<span style="color: #228899; font-weight: bold">if</span> (non_filled_found <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>)
+			<span style="color: #228899; font-weight: bold">break</span>;
+	}<span style="color: #666666; font-style: italic">//end for i </span>
+	
+	<span style="color: #228899; font-weight: bold">if</span>(non_filled_found <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">0</span>)
+		<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+
+	<span style="color: #228899; font-weight: bold">for</span>(<span style="color: #6666ff; font-weight: bold">int</span> num <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">1</span>; num <span style="color: #333333">&lt;=</span> <span style="color: #6666ff; font-weight: bold">9</span>; num<span style="color: #333333">++</span>)
+	{
+		<span style="color: #228899; font-weight: bold">if</span>(is_val_valid(num, i, j, sudoku) <span style="color: #333333">==</span> <span style="color: #6666ff; font-weight: bold">1</span>)
+		{
+			sudoku[i][j] <span style="color: #333333">=</span> num;
+
+			<span style="color: #228899; font-weight: bold">if</span>(solve_sudoku(sudoku))
+			{
+				<span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">1</span>;
+			}<span style="color: #666666; font-style: italic">//end if</span>
+			
+			sudoku[i][j] <span style="color: #333333">=</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+		}<span style="color: #666666; font-style: italic">//end if</span>
+	}<span style="color: #666666; font-style: italic">//end for num</span>
+
+  <span style="color: #228899; font-weight: bold">return</span> <span style="color: #6666ff; font-weight: bold">0</span>;
+}<span style="color: #666666; font-style: italic">//end solve_sudoku</span>
+</pre></div>
+<p></p>
+        
+                            </section>
+                            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                            <!--sudoku.h-->
+                            <section>
+                                <hnew id="sudoku.h">sudoku.h</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #557799">#ifndef SUDOKU_H_</span>
+<span style="color: #557799">#define SUDOKU_H_</span>
+
+<span style="color: #557799">#include &lt;stdio.h&gt;</span>
+<span style="color: #557799">#include &lt;stdlib.h&gt;</span>
+<span style="color: #557799">#include &lt;assert.h&gt;</span>
+<span style="color: #557799">#include &lt;memory.h&gt;</span>
+
+<span style="color: #666666; font-style: italic">// Function: is_val_in_row</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_in_row</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+<span style="color: #666666; font-style: italic">// Function: is_val_in_col</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_in_col</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+<span style="color: #666666; font-style: italic">// Function: is_val_in_3x3_zone</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_in_3x3_zone</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> j, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+<span style="color: #666666; font-style: italic">// Function: is_val_valid</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">is_val_valid</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> val, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> i, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> j, <span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+<span style="color: #666666; font-style: italic">// Function: solve_sudoku</span>
+<span style="color: #6666ff; font-weight: bold">int</span> <span style="color: #55eedd; font-weight: bold">solve_sudoku</span>(<span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+<span style="color: #666666; font-style: italic">// Procedure: print_sudoku</span>
+<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">print_sudoku</span>(<span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+<span style="color: #666666; font-style: italic">// Procedure: parse_sudoku</span>
+<span style="color: #6666ff; font-weight: bold">void</span> <span style="color: #55eedd; font-weight: bold">parse_sudoku</span>(<span style="color: #228899; font-weight: bold">const</span> <span style="color: #6666ff; font-weight: bold">char</span> fpath[], <span style="color: #6666ff; font-weight: bold">int</span> sudoku[<span style="color: #6666ff; font-weight: bold">9</span>][<span style="color: #6666ff; font-weight: bold">9</span>]);
+
+
+<span style="color: #557799">#endif</span>
+</pre></div>
+<p></p>
+
+                            </section>
+                            
+        
+        
+        
+        
+        
+        
+        
+                            
+                            <!--Makefile-->
+                            <section>
+                                <hnew id="Makefile">Makefile</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #55eedd; font-weight: bold">mp7</span><span style="color: #333333">:</span> <span style="color: #6600EE; font-weight: bold">main.c sudoku.c</span>
+	g++ -g -c sudoku.c -o sudoku.o
+	g++ -g -c main.c -o main.o
+	g++ -g main.o sudoku.o sudoku_golden.a -o mp7
+
+<span style="color: #55eedd; font-weight: bold">clean</span><span style="color: #333333">:</span>
+	rm *.o mp7
+
+<span style="color: #55eedd; font-weight: bold">sudoku1</span><span style="color: #333333">:</span> <span style="color: #6600EE; font-weight: bold">mp7</span>
+	./mp7 sudoku1.txt
+
+<span style="color: #55eedd; font-weight: bold">sudoku2</span><span style="color: #333333">:</span> <span style="color: #6600EE; font-weight: bold">mp7</span>
+	./mp7 sudoku2.txt
+
+<span style="color: #55eedd; font-weight: bold">sudoku3</span><span style="color: #333333">:</span> <span style="color: #6600EE; font-weight: bold">mp7</span>
+	./mp7 sudoku3.txt
+</pre></div>
+<p></p>
+                            </section>
+                            
+                            
+        
+        
+        
+        
+        
+                            <!--Input Example-->
+                            <section>
+                                <hnew id="Input">Input Example in .txt file</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <br>0 0 0 4 2 0 0 0 0
+                                <br>3 0 0 0 0 0 8 0 0
+                                <br>9 0 0 1 0 8 0 0 5
+                                <br>0 2 0 0 8 0 0 0 1
+                                <br>1 0 0 0 0 4 0 2 0
+                                <br>8 4 0 0 0 0 0 0 0
+                                <br>4 1 0 0 0 0 0 3 6
+                                <br>0 0 5 0 0 3 0 0 0
+                                <br>0 0 6 0 0 0 2 0 0
+<p></p>
+        
+                            </section>
+                            
+                            <!--Output Ex-->
+                            <section>
+                                <hnew id="Output">Expected Output Sudoku</hnew><br>
+					               <a href="#" class="buttonBackToTop">BACK TO TOP</a>
+                                <br>5 8 1 4 2 6 3 7 9
+                                <br>3 6 4 5 7 9 8 1 2
+                                <br>9 7 2 1 3 8 4 6 5
+                                <br>6 2 3 7 8 5 9 4 1
+                                <br>1 5 9 3 6 4 7 2 8
+                                <br>8 4 7 9 1 2 6 5 3
+                                <br>4 1 8 2 9 7 5 3 6
+                                <br>2 9 5 6 4 3 1 8 7
+                                <br>7 3 6 8 5 1 2 9 4
+                            </section>
+                       
+ _____________________________________________________________________________________________________________________________________________________________
+        <br>
+        <br> 
+        
+        <!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollgress.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.slidertron.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+        
+        <!--Back to top-->
+        <section id="cta" class="wrapper style3">
+				
+				<ul class="actions">
+					<li><a href="#" class="button big">Back to Top</a></li>
+				</ul>
+            
+            
+                <ul class="actions">
+					<li><a href="index.html" class="button big">Main Menu</a></li>
+				</ul>
+			</section>  
+        <footer id="footer">
+				<ul class="icons">
+					
+					
+					
+					<li><a href="https://www.linkedin.com/in/lisa-gentil-33b45892/" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:gentillisa5@gmail.com" class="icon fa-envelope"><span class="label">Envelope</span></a></li>
+				</ul>
+				
+				<span>
+				Lisa Gentil's Portfolio
+				</span>
+			</footer>
+    </body>
+</html>
